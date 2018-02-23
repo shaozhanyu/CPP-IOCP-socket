@@ -1,0 +1,109 @@
+﻿生成启动时间为 2018/2/2 11:30:39。
+     1>项目“D:\C++项目\APPsocket服务端\socket服务端\socket服务端.vcxproj”在节点 2 上(rebuild 个目标)。
+     1>InitializeBuildStatus:
+         正在创建“x64\Release\socket服务端.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+       ClCompile:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /I"D:\C++项目\APPsocket服务端\socket服务端\json\src\lib_json" /I"D:\C++项目\APPsocket服务端\socket服务端\json\include\json" /I"D:\C++项目\APPsocket服务端\socket服务端\mysql64\lib" /I"D:\C++项目\APPsocket服务端\socket服务端\mysql64\include" /Zi /nologo /W3 /WX- /O2 /Oi /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _MBCS /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"StdAfx.h" /Fp"x64\Release\socket服务端.pch" /Fo"x64\Release\\" /Fd"x64\Release\vc100.pdb" /Gd /TP /errorReport:prompt stdafx.cpp
+         stdafx.cpp
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /I"D:\C++项目\APPsocket服务端\socket服务端\json\src\lib_json" /I"D:\C++项目\APPsocket服务端\socket服务端\json\include\json" /I"D:\C++项目\APPsocket服务端\socket服务端\mysql64\lib" /I"D:\C++项目\APPsocket服务端\socket服务端\mysql64\include" /Zi /nologo /W3 /WX- /O2 /Oi /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _MBCS /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc100.pdb" /Gd /TP /errorReport:prompt json\src\lib_json\json_reader.cpp json\src\lib_json\json_value.cpp json\src\lib_json\json_writer.cpp mSQLSave.cpp MyList.cpp MyMutex.cpp MyQueue.cpp MyStack.cpp MyThread.cpp MyThreadPool.cpp RecAPP.cpp SaveQueue.cpp SocketAPP.cpp SocketTCP.cpp "socket服务端.cpp" Task.cpp TestTask.cpp
+         json_reader.cpp
+         json_value.cpp
+         json_writer.cpp
+     1>json\src\lib_json\json_writer.cpp(119): warning C4267: “初始化”: 从“size_t”转换到“unsigned int”，可能丢失数据
+         mSQLSave.cpp
+         MyList.cpp
+     1>MyList.cpp(46): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+         MyMutex.cpp
+         MyQueue.cpp
+         MyStack.cpp
+     1>MyStack.cpp(36): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+         MyThread.cpp
+         MyThreadPool.cpp
+         RecAPP.cpp
+     1>RecAPP.cpp(85): warning C4244: “参数”: 从“__int64”转换到“unsigned long”，可能丢失数据
+     1>RecAPP.cpp(2625): warning C4101: “sys”: 未引用的局部变量
+     1>RecAPP.cpp(2816): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+     1>RecAPP.cpp(2824): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+     1>RecAPP.cpp(2830): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+     1>RecAPP.cpp(2834): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+     1>RecAPP.cpp(2837): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+     1>RecAPP.cpp(2843): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+         SaveQueue.cpp
+         SocketAPP.cpp
+     1>SocketAPP.cpp(231): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+         SocketTCP.cpp
+     1>SocketTCP.cpp(233): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+         socket服务端.cpp
+     1>socket服务端.cpp(275): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files\Microsoft Visual Studio 10.0\VC\include\time.inl(112) : 参见“localtime”的声明
+     1>socket服务端.cpp(279): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : 参见“sprintf”的声明
+     1>socket服务端.cpp(282): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(234) : 参见“fopen”的声明
+     1>socket服务端.cpp(297): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files\Microsoft Visual Studio 10.0\VC\include\time.inl(112) : 参见“localtime”的声明
+     1>socket服务端.cpp(300): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : 参见“sprintf”的声明
+     1>socket服务端.cpp(302): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(234) : 参见“fopen”的声明
+     1>socket服务端.cpp(390): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : 参见“sprintf”的声明
+     1>socket服务端.cpp(458): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : 参见“sprintf”的声明
+     1>socket服务端.cpp(424): warning C4101: “pch”: 未引用的局部变量
+     1>socket服务端.cpp(566): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(363) : 参见“_snprintf”的声明
+     1>socket服务端.cpp(682): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(304) : 参见“scanf”的声明
+     1>socket服务端.cpp(686): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files\Microsoft Visual Studio 10.0\VC\include\time.inl(112) : 参见“localtime”的声明
+     1>socket服务端.cpp(689): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : 参见“sprintf”的声明
+     1>socket服务端.cpp(691): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(234) : 参见“fopen”的声明
+     1>socket服务端.cpp(579): warning C4101: “a”: 未引用的局部变量
+         Task.cpp
+         TestTask.cpp
+     1>TestTask.cpp(200): warning C4244: “参数”: 从“__int64”转换到“unsigned long”，可能丢失数据
+     1>TestTask.cpp(205): warning C4244: “=”: 从“__int64”转换到“long”，可能丢失数据
+     1>TestTask.cpp(212): warning C4244: “=”: 从“__int64”转换到“long”，可能丢失数据
+     1>TestTask.cpp(220): warning C4244: “=”: 从“__int64”转换到“long”，可能丢失数据
+     1>TestTask.cpp(228): warning C4244: “=”: 从“__int64”转换到“long”，可能丢失数据
+     1>TestTask.cpp(511): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : 参见“sprintf”的声明
+     1>TestTask.cpp(569): warning C4244: “=”: 从“my_ulonglong”转换到“int”，可能丢失数据
+     1>TestTask.cpp(546): warning C4101: “sys”: 未引用的局部变量
+     1>TestTask.cpp(660): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : 参见“sprintf”的声明
+     1>TestTask.cpp(718): warning C4244: “=”: 从“my_ulonglong”转换到“int”，可能丢失数据
+     1>TestTask.cpp(695): warning C4101: “sys”: 未引用的局部变量
+       Link:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\C++项目\APPsocket服务端\x64\Release\socket服务端.exe" /INCREMENTAL:NO /NOLOGO libmysql.lib /MANIFEST:NO /DEBUG /PDB:"D:\C++项目\APPsocket服务端\x64\Release\socket服务端.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\C++项目\APPsocket服务端\x64\Release\socket服务端.lib" /MACHINE:X64 x64\Release\json_reader.obj
+         x64\Release\json_value.obj
+         x64\Release\json_writer.obj
+         x64\Release\mSQLSave.obj
+         x64\Release\MyList.obj
+         x64\Release\MyMutex.obj
+         x64\Release\MyQueue.obj
+         x64\Release\MyStack.obj
+         x64\Release\MyThread.obj
+         x64\Release\MyThreadPool.obj
+         x64\Release\RecAPP.obj
+         x64\Release\SaveQueue.obj
+         x64\Release\SocketAPP.obj
+         x64\Release\SocketTCP.obj
+         "x64\Release\socket服务端.obj"
+         x64\Release\stdafx.obj
+         x64\Release\Task.obj
+         x64\Release\TestTask.obj
+         正在生成代码
+         已完成代码的生成
+         socket服务端.vcxproj -> D:\C++项目\APPsocket服务端\x64\Release\socket服务端.exe
+       FinalizeBuildStatus:
+         正在删除文件“x64\Release\socket服务端.unsuccessfulbuild”。
+         正在对“x64\Release\socket服务端.lastbuildstate”执行 Touch 任务。
+     1>已完成生成项目“D:\C++项目\APPsocket服务端\socket服务端\socket服务端.vcxproj”(rebuild 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:16.10

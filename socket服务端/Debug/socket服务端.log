@@ -1,0 +1,95 @@
+﻿生成启动时间为 2018/2/2 11:31:40。
+     1>项目“D:\C++项目\APPsocket服务端\socket服务端\socket服务端.vcxproj”在节点 2 上(rebuild 个目标)。
+     1>_PrepareForClean:
+         正在删除文件“Debug\socket服务端.lastbuildstate”。
+       InitializeBuildStatus:
+         正在创建“Debug\socket服务端.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+       ClCompile:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"D:\C++项目\APPsocket服务端\socket服务端\mysql32\lib" /I"D:\C++项目\APPsocket服务端\socket服务端\mysql32\include" /I"D:\C++项目\APPsocket服务端\socket服务端\json\src\lib_json" /I"D:\C++项目\APPsocket服务端\socket服务端\json\include\json" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"StdAfx.h" /Fp"Debug\socket服务端.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
+         stdafx.cpp
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"D:\C++项目\APPsocket服务端\socket服务端\mysql32\lib" /I"D:\C++项目\APPsocket服务端\socket服务端\mysql32\include" /I"D:\C++项目\APPsocket服务端\socket服务端\json\src\lib_json" /I"D:\C++项目\APPsocket服务端\socket服务端\json\include\json" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt json\src\lib_json\json_reader.cpp json\src\lib_json\json_value.cpp json\src\lib_json\json_writer.cpp mSQLSave.cpp MyList.cpp MyMutex.cpp MyQueue.cpp MyStack.cpp MyThread.cpp MyThreadPool.cpp RecAPP.cpp SaveQueue.cpp SocketAPP.cpp SocketTCP.cpp "socket服务端.cpp" Task.cpp TestTask.cpp
+         TestTask.cpp
+     1>d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(511): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(371) : 参见“sprintf”的声明
+     1>d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(569): warning C4244: “=”: 从“my_ulonglong”转换到“int”，可能丢失数据
+     1>d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(546): warning C4101: “sys”: 未引用的局部变量
+     1>d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(660): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(371) : 参见“sprintf”的声明
+     1>d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(718): warning C4244: “=”: 从“my_ulonglong”转换到“int”，可能丢失数据
+     1>d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(695): warning C4101: “sys”: 未引用的局部变量
+         Task.cpp
+         socket服务端.cpp
+     1>d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(275): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\time.inl(112) : 参见“localtime”的声明
+     1>d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(279): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(371) : 参见“sprintf”的声明
+     1>d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(282): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(234) : 参见“fopen”的声明
+     1>d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(297): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\time.inl(112) : 参见“localtime”的声明
+     1>d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(300): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(371) : 参见“sprintf”的声明
+     1>d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(302): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(234) : 参见“fopen”的声明
+     1>d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(390): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(371) : 参见“sprintf”的声明
+     1>d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(458): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(371) : 参见“sprintf”的声明
+     1>d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(424): warning C4101: “pch”: 未引用的局部变量
+     1>d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(566): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(363) : 参见“_snprintf”的声明
+     1>d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(682): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(304) : 参见“scanf”的声明
+     1>d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(686): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\time.inl(112) : 参见“localtime”的声明
+     1>d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(689): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(371) : 参见“sprintf”的声明
+     1>d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(691): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(234) : 参见“fopen”的声明
+     1>d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(579): warning C4101: “a”: 未引用的局部变量
+         SocketTCP.cpp
+         SocketAPP.cpp
+         SaveQueue.cpp
+         RecAPP.cpp
+     1>d:\c++项目\appsocket服务端\socket服务端\recapp.cpp(2625): warning C4101: “sys”: 未引用的局部变量
+         MyThreadPool.cpp
+         MyThread.cpp
+         MyStack.cpp
+         MyQueue.cpp
+         MyMutex.cpp
+         MyList.cpp
+         mSQLSave.cpp
+         json_writer.cpp
+         json_value.cpp
+         json_reader.cpp
+         正在生成代码...
+       Link:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\C++项目\APPsocket服务端\Debug\socket服务端.exe" /INCREMENTAL /NOLOGO libmysql.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST:NO /DEBUG /PDB:"D:\C++项目\APPsocket服务端\Debug\socket服务端.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\C++项目\APPsocket服务端\Debug\socket服务端.lib" /MACHINE:X86 /PROFILE Debug\json_reader.obj
+         Debug\json_value.obj
+         Debug\json_writer.obj
+         Debug\mSQLSave.obj
+         Debug\MyList.obj
+         Debug\MyMutex.obj
+         Debug\MyQueue.obj
+         Debug\MyStack.obj
+         Debug\MyThread.obj
+         Debug\MyThreadPool.obj
+         Debug\RecAPP.obj
+         Debug\SaveQueue.obj
+         Debug\SocketAPP.obj
+         Debug\SocketTCP.obj
+         "Debug\socket服务端.obj"
+         Debug\stdafx.obj
+         Debug\Task.obj
+         Debug\TestTask.obj
+     1>LINK : warning LNK4075: 忽略“/INCREMENTAL”(由于“/PROFILE”规范)
+     1>json_reader.obj : warning LNK4075: 忽略“/EDITANDCONTINUE”(由于“/OPT:REF”规范)
+         socket服务端.vcxproj -> D:\C++项目\APPsocket服务端\Debug\socket服务端.exe
+       FinalizeBuildStatus:
+         正在删除文件“Debug\socket服务端.unsuccessfulbuild”。
+         正在对“Debug\socket服务端.lastbuildstate”执行 Touch 任务。
+     1>已完成生成项目“D:\C++项目\APPsocket服务端\socket服务端\socket服务端.vcxproj”(rebuild 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:17.19
