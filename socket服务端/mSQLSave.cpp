@@ -140,9 +140,9 @@ int  APPUpdateUserState(SOCKET   ClientS ,Json::Value  mJsonValue)
 
 	//on duplicate key update  需要设置一个主键，不自动增长，遇到主键冲突，执行后面的updata内容
 	string  mSQLStr = "INSERT  INTO user_set(user_id , username, token,app_socket,setlock,card,update_card,time)   VALUES( 1 , '"
-		+ str_username + "','"+ str_token + "',"+ tos + ","+ str_lock + ",'"+ str_card+ "',1, NOW()) on duplicate key update  user_id = " + 
+		+ str_username + "','"+ str_token + "',"+ tos + ","+ str_lock + ",'"+ str_card+ "',1, NOW(3)) on duplicate key update  user_id = " + 
 		"1 ,username = '"  + str_username + "' , token =  '" + str_token + "' , app_socket = " + tos + ", setlock = " + str_lock +", card = '"+ 
-		str_card  + "', update_card = 2 , time = NOW() " ;
+		str_card  + "', update_card = 2 , time = NOW(3) " ;
 
 
 	//string  mSQLStr="UPDATE user_set  SET username = '" + str_username + "' , token =  '" + str_token + "' , app_socket = " + tos + ", setlock = " + str_lock + ", card = '"+ str_card  +

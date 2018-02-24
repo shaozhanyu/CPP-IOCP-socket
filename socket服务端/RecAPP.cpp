@@ -539,7 +539,7 @@ int  responseAPPregester(SOCKET   ClientS ,int Command, char * src, unsigned  in
 	}
 ////
 	string  m_reguser = "INSERT  INTO  regester_user ( username , userpwd, token ,phone , regester_time )   VALUES( '" +
-		m_username + "','" + m_userpwd + "','9m7u8N7x5AFEE2rvfioikjde215CTT','"+ m_phone + "', NOW() ) ";
+		m_username + "','" + m_userpwd + "','9m7u8N7x5AFEE2rvfioikjde215CTT','"+ m_phone + "', NOW(3) ) ";
 
 	cout<<m_reguser<<endl;
 
@@ -859,8 +859,8 @@ int  responseAPPbangding(SOCKET   ClientS ,Json::Value  mJsonValue)
 	//on duplicate key update  需要设置一个主键，不自动增长，遇到主键冲突，执行后面的updata内容
 	string  mSQLStr = "INSERT  INTO  user_bike(bike_id , username, card,phone,bikename,bikecolor,biketype,regester_time)   VALUES( 1, '"
 		+ str_username + "','"+ str_card + "','"+ str_phone + "','"+ str_bikename + "','"+ str_bikecolor+ "','"+ str_biketype
-		+ "', NOW()) on duplicate key update  bike_id = 1 , username = '" + str_username + "', card = '" + str_card + "', phone = '" + str_phone +"', bikename = '" + str_bikename +
-		"', bikecolor = '" + str_bikecolor + "', biketype = '"+str_biketype + "', regester_time =  NOW() " ;
+		+ "', NOW(3)) on duplicate key update  bike_id = 1 , username = '" + str_username + "', card = '" + str_card + "', phone = '" + str_phone +"', bikename = '" + str_bikename +
+		"', bikecolor = '" + str_bikecolor + "', biketype = '"+str_biketype + "', regester_time =  NOW(3) " ;
 	
 
 	//UPDATE不会新增,是覆盖,有几条就覆盖几条。
@@ -1140,7 +1140,7 @@ int  responseAPPbind (SOCKET   ClientS ,int Command, char * src, unsigned  int  
 	//on duplicate key update  需要设置一个主键，不自动增长，遇到主键冲突，执行后面的updata内容
 	 mSQLStr = "INSERT  INTO  user_bike(  username, card,phone,bikename,bikecolor,biketype,regester_time)   VALUES( '"
 		+ str_username + "','"+ str_card + "','"+ str_phone + "','"+ str_bikename + "','"+ str_bikecolor+ "','"+ str_biketype
-		+ "', NOW())" ;
+		+ "', NOW(3))" ;
 	//UPDATE不会新增,是覆盖,有几条就覆盖几条。
 	
 	//string  mSQLStr="UPDATE  user_bike  SET  username = '" + str_username + "', card = '" + str_card + "', phone = '" + str_phone +"', bikename = '" + str_bikename +
@@ -1982,9 +1982,9 @@ int  APPSetWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue)
 	//string  mSQLStr="UPDATE user_set  SET username = '" + str_username + "' , token =  '" + str_token + "' , app_socket = " + tos + ", setlock = " + str_lock + ", card = '"+ str_card  +
 	//	"', update_card = 2 , time = NOW() " ;
 	string  mSQLStr = "INSERT  INTO  alarm_weilan(  card, card_socket,allow_alarm,radius,gps,time)   VALUES(  '"
-		+ str_card + "','"+ tos + "' , 1  ," +  radius + ",'" + str_gps + "' , NOW()) on duplicate key update  " + 
+		+ str_card + "','"+ tos + "' , 1  ," +  radius + ",'" + str_gps + "' , NOW(3)) on duplicate key update  " + 
 		" card = '"  + str_card + "' , card_socket =  '" + tos + "' , allow_alarm = 1 , radius = " + radius + " , gps = '"+ 
-		str_gps +"' , time = NOW() " ;
+		str_gps +"' , time = NOW(3) " ;
 
 	//cout<<mSQLStr<<endl;
 	
@@ -2165,11 +2165,11 @@ int  APPUnSetWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue)
 	//on duplicate key update  需要设置一个主键，不自动增长，遇到主键冲突，执行后面的updata内容
 
 	//string  mSQLStr="UPDATE user_set  SET username = '" + str_username + "' , token =  '" + str_token + "' , app_socket = " + tos + ", setlock = " + str_lock + ", card = '"+ str_card  +
-	//	"', update_card = 2 , time = NOW() " ;
+	//	"', update_card = 2 , time = NOW(3) " ;
 	string  mSQLStr = "INSERT  INTO  alarm_weilan(  card, card_socket,allow_alarm,radius,gps,time)   VALUES(  '"
-		+ str_card + "','"+ tos + "' , 0  ," +  radius + ",'" + str_gps + "' , NOW()) on duplicate key update  " + 
+		+ str_card + "','"+ tos + "' , 0  ," +  radius + ",'" + str_gps + "' , NOW(3)) on duplicate key update  " + 
 		" card = '"  + str_card + "' , card_socket =  '" + tos + "' , allow_alarm = 0 , radius = " + radius + " , gps = '"+ 
-		str_gps +"' , time = NOW() " ;
+		str_gps +"' , time = NOW(3) " ;
 
 	//cout<<mSQLStr<<endl;
 
@@ -2342,7 +2342,7 @@ int  APPConfigWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue)
 		return -4;
 	}
 ///////////////////////////////////////////////////////////////////////
-	string  mSQLStr="UPDATE alarm_weilan  SET allow_alarm = '" + allow_alarm + "' , time = NOW()  WHERE  card  =  '" + str_card +"' ";
+	string  mSQLStr="UPDATE alarm_weilan  SET allow_alarm = '" + allow_alarm + "' , time = NOW(3)  WHERE  card  =  '" + str_card +"' ";
 
 	//cout<<mSQLStr<<endl;
 	

@@ -438,7 +438,7 @@ int  SaveHardStateInfo(SOCKET   ClientS , Json::Value  mJsonValue)
 	//INSERT 会新增一条
 	//on duplicate key update  需要设置一个主键，不自动增长，遇到主键冲突，执行后面的updata内容
 	string  mSQLStr = "INSERT  INTO  card_data(  card , card_socket, card_state , card_lock , gps ,time )   VALUES( '" +
-		str_card + "'," + str_soc + ",'"+ str_state + "',"+ str_lock + ",'"+ str_gps+ "', NOW() ) ";
+		str_card + "'," + str_soc + ",'"+ str_state + "',"+ str_lock + ",'"+ str_gps+ "', NOW(3) ) ";
 
 	//UPDATE不会新增,是覆盖,有几条就覆盖几条。
 	
@@ -595,7 +595,7 @@ int   SaveGPSData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len)
 	//INSERT 会新增一条
 	//on duplicate key update  需要设置一个主键，不自动增长，遇到主键冲突，执行后面的updata内容
 	string  mSQLStr = "INSERT  INTO  card_data(  card , card_socket, card_state , card_lock , gps ,time )   VALUES( '" +
-		str_card + "'," + str_soc + ",'"+ str_state + "',"+ str_lock + ",'"+ str_gps+ "', NOW() ) ";
+		str_card + "'," + str_soc + ",'"+ str_state + "',"+ str_lock + ",'"+ str_gps+ "', NOW(3) ) ";
 
 	//UPDATE不会新增,是覆盖,有几条就覆盖几条。
 
@@ -744,7 +744,7 @@ int   SaveBaseStationData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  in
 	//INSERT 会新增一条
 	//on duplicate key update  需要设置一个主键，不自动增长，遇到主键冲突，执行后面的updata内容
 	string  mSQLStr = "INSERT  INTO  card_base_station_data(  card , card_socket, card_state , card_lock , base_station ,time )   VALUES( '" +
-		str_card + "'," + str_soc + ",'"+ str_state + "',"+ str_lock + ",'"+ str_base_station+ "', NOW() ) ";
+		str_card + "'," + str_soc + ",'"+ str_state + "',"+ str_lock + ",'"+ str_base_station+ "', NOW(3) ) ";
 
 	//UPDATE不会新增,是覆盖,有几条就覆盖几条。
 

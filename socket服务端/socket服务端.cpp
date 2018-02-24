@@ -459,7 +459,7 @@ int  InitInsertBikeDatabaseCardinfo()
 		str_card = card;
 		str_uuid = MakeUUID();
 		string  InsertCard  = "INSERT INTO cardinfo( card , used ,serialnumber ,device ,time)    \
-			 VALUES(  '" + str_card + "',NULL ,'" + str_uuid + "', NULL , NOW() )";
+			 VALUES(  '" + str_card + "',NULL ,'" + str_uuid + "', NULL , NOW(3) )";
 
 		res = mysql_query(&myCont,   (const  char *)InsertCard.c_str());
         

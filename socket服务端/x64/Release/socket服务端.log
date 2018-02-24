@@ -1,4 +1,4 @@
-﻿生成启动时间为 2018/2/2 11:30:39。
+﻿生成启动时间为 2018/2/24 20:35:16。
      1>项目“D:\C++项目\APPsocket服务端\socket服务端\socket服务端.vcxproj”在节点 2 上(rebuild 个目标)。
      1>InitializeBuildStatus:
          正在创建“x64\Release\socket服务端.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
@@ -106,4 +106,4 @@
 
 生成成功。
 
-已用时间 00:00:16.10
+已用时间 00:00:14.61
