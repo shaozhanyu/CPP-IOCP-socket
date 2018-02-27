@@ -602,31 +602,33 @@ int   SaveGPSData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len)
 	res = mysql_query(&myCont, (const  char *)mSQLStr.c_str()); //执行SQL语句,添加一条记录
 	
 	mysql_close(&myCont);//及时关闭mysql连接，否则占用连接数
+
 	if(!res  )
 	{		
+		cout << "SaveGPS-----sucess!\n" << endl;
+		WX_Send_CardAlarm(ClientS , str_card);
+		return 0; 
 		Json::Value root;             // 表示整个 json 对象
 		root["errno"] = Json::Value(0);     // 新建一个 Key（名为：key_string），赋予字符串值："value_string"。
 		root["error"] = Json::Value("sucess"); // 新建一个 Key（名为：key_number），赋予数值：12345。	
 		Json::FastWriter  fast_writer;//查看json内容对象
 		string str = fast_writer.write(root); //json转string			
 		send(ClientS , (char *)str.data(), (int)str.length(), 0);  // 发送信息 	
-
 		//GetLocalTime( &sys ); 
-		//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
-		cout << "SaveGPS-----sucess!\n" << endl;
+		//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 		
 		return 0;  		
 	}
 	else
 	{
 		Json::Value root;             // 表示整个 json 对象
 		root["errno"] = Json::Value(1);     // 新建一个 Key（名为：key_string），赋予字符串值："value_string"。
-		root["error"] = Json::Value("update_error");             // 新建一个 Key（名为：key_number），赋予数值：12345。
+		root["error"] = Json::Value("insert_gps_error");             // 新建一个 Key（名为：key_number），赋予数值：12345。
 		
 		Json::FastWriter  fast_writer;//查看json内容对象
 		string str = fast_writer.write(root); //json转string
 
 		send(ClientS , (char *)str.data(), (int)str.length(), 0);  // 发送信息 
-		cout << "add GPS SQL error!\n" << endl;
+		cout << "Insert GPS Data error!\n" << endl;
 		return -3;
 		
 	}
@@ -785,6 +787,149 @@ int   SaveBaseStationData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  in
 
 }
 
+//////////////////////查找等待设定的设备表，并发送给硬件//////////////////////////////////////////
+int   WX_Send_CardAlarm(SOCKET ClientS , string  DevCard)
+{
+	bool getsucess =false;
+	const char user[] = "root";         
+    const char pswd[] = "123456";        
+    const char host[] = "localhost";  
+	unsigned int port = 3306;   
+    char table[] = "bike";    
+	char bike_username[32]="";
+	char bike_userpwd[32]="";
+	char bike_token[66]="";
+	int  bike_app_socket=0;
+	int  bike_setlock=0;
+	int  bike_update_card =0;
+	
+	int  bike_card_socket =1;
+	char bike_card_state='I';
+	int  bike_card_lock=0;
+	char bike_bike_name[64]="";
+	char bike_gps[200]=",A,3158.4608,N,11848.3737,E,10.05";
+	struct tm  ;  
+
+	string   tos ,str_token,str_card ,str_gps, str_username;  
+	string   str_lock;
+	string   radius;
+	string   weilan_gps;
+	string   weilan_radius;
+	string   allow_alarm;
+	string  m_strToken = "SELECT  *  FROM  set_card_alarm  WHERE card = '" + DevCard + "' ORDER BY card_id ASC LIMIT 1 ";
+	            
+    MYSQL myCont;
+    MYSQL_RES *result;
+	MYSQL_ROW  mysql_row; //行内容
+	my_ulonglong  f1,f2,num_row,num_col; 
+    int res;
+
+	SYSTEMTIME sys; 
+	//GetLocalTime( &sys ); 
+	//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
+
+    mysql_init(&myCont);
+
+    if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
+    {  
+    }
+    else
+    {
+        cout << "connect failed!\n" << endl;
+		mysql_close(&myCont);
+		return -2;
+    }
+	//cout<<m_strToken<<endl;
+	getsucess =false;
+	res = mysql_query(&myCont, (const  char *)m_strToken.c_str()); //执行SQL语句,通过token查找username
+	if(!res  )
+	{			
+		//保存查询到的数据到result
+        result = mysql_store_result(&myCont);
+        num_row=mysql_num_rows(result); //读取行数
+		num_col=mysql_num_fields(result); //读取列数
+		//printf("row: %d,col: %d\n",num_row,num_col);//打印行列个数
+	    MYSQL_FIELD* fields = mysql_fetch_fields(result); //返回所有字段结构的数组
+		if(num_row > 0)
+		{
+			for(f1=0;f1<1;f1++) //循环行只取了最新的一行
+			{		
+				mysql_row = mysql_fetch_row(result); //获取每行的内容
+
+				for(f2=0;f2<num_col;f2++) //循环列
+				{	
+					if (fields[f2].name!=NULL)  
+					{						
+						if (!strcmp( fields[f2].name , "allow_alarm")) //判断当前列的字段名称
+						{
+							allow_alarm = getNullStr(mysql_row[f2]); //获取字段内容，里面判断非NULL			
+							getsucess =true;
+							cout<<allow_alarm<<endl;
+						}
+					}					
+					//printf("[Row %d,Col %d]==>[%s]\n",f1,f2,mysql_row[f2]); //打印每行的各个列数据			
+				}
+			}
+		}
+		
+		mysql_free_result(result); //释放缓存，特别注意，不释放会导致内存增长
+
+	}
+	
+	if(getsucess ==true)
+	{
+
+	}
+	else
+	{
+		mysql_close(&myCont);
+		cout << "no alarm_set list !\n" << endl;
+		Json::Value root;             // 表示整个 json 对象
+		root["errno"] = Json::Value(0);     // 新建一个 Key（名为：key_string），赋予字符串值："value_string"。
+		root["error"] = Json::Value("sucess"); // 新建一个 Key（名为：key_number），赋予数值：12345。	
+		root["lock"] = Json::Value("");
+		Json::FastWriter  fast_writer;//查看json内容对象
+		string str = fast_writer.write(root); //json转string	
+		send(ClientS , str.c_str(), str.length() , 0);  // 发送信息
+		return 0;
+	}
+
+	if( 0 == allow_alarm.compare("1"))
+	{
+		Json::Value root;             // 表示整个 json 对象
+		root["errno"] = Json::Value(0);     // 新建一个 Key（名为：key_string），赋予字符串值："value_string"。
+		root["error"] = Json::Value("sucess"); // 新建一个 Key（名为：key_number），赋予数值：12345。	
+		root["lock"] = Json::Value("setlock");
+		Json::FastWriter  fast_writer;//查看json内容对象
+		string str = fast_writer.write(root); //json转string	
+		send(ClientS , str.c_str(), str.length() , 0);  // 发送信息
+	}		
+	else 
+	{
+		Json::Value root;             // 表示整个 json 对象
+		root["errno"] = Json::Value(0);     // 新建一个 Key（名为：key_string），赋予字符串值："value_string"。
+		root["error"] = Json::Value("sucess"); // 新建一个 Key（名为：key_number），赋予数值：12345。	
+		root["lock"] = Json::Value("setunlock");
+		Json::FastWriter  fast_writer;//查看json内容对象
+		string str = fast_writer.write(root); //json转string	
+		send(ClientS , str.c_str(), str.length() , 0);  // 发送信息
+	}
+
+	m_strToken = "DELETE    FROM  set_card_alarm   WHERE card = '" + DevCard + "' ORDER BY time ASC LIMIT 1 ";
+	res = mysql_query(&myCont, (const  char *)m_strToken.c_str()); //执行SQL语句,通过token查找username
+	if(!res  )
+	{			
+
+		mysql_close(&myCont);
+
+		return 0;
+		
+	}
+	mysql_close(&myCont);
+
+	return -1;
+
+}
 
 
 

@@ -2285,7 +2285,6 @@ int  APPConfigWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue)
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
         //mysql_query(&myCont, "SET NAMES utf8"); //…Ë÷√±‡¬Î∏Ò Ω
-       
     }
     else
     {

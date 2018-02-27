@@ -1,4 +1,4 @@
-﻿生成启动时间为 2018/2/24 20:35:16。
+﻿生成启动时间为 2018/2/27 9:36:39。
      1>项目“D:\C++项目\APPsocket服务端\socket服务端\socket服务端.vcxproj”在节点 2 上(rebuild 个目标)。
      1>InitializeBuildStatus:
          正在创建“x64\Release\socket服务端.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
@@ -21,13 +21,13 @@
          MyThreadPool.cpp
          RecAPP.cpp
      1>RecAPP.cpp(85): warning C4244: “参数”: 从“__int64”转换到“unsigned long”，可能丢失数据
-     1>RecAPP.cpp(2625): warning C4101: “sys”: 未引用的局部变量
-     1>RecAPP.cpp(2816): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
-     1>RecAPP.cpp(2824): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
-     1>RecAPP.cpp(2830): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
-     1>RecAPP.cpp(2834): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
-     1>RecAPP.cpp(2837): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
-     1>RecAPP.cpp(2843): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+     1>RecAPP.cpp(2624): warning C4101: “sys”: 未引用的局部变量
+     1>RecAPP.cpp(2815): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+     1>RecAPP.cpp(2823): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+     1>RecAPP.cpp(2829): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+     1>RecAPP.cpp(2833): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+     1>RecAPP.cpp(2836): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+     1>RecAPP.cpp(2842): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
          SaveQueue.cpp
          SocketAPP.cpp
      1>SocketAPP.cpp(231): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
@@ -73,10 +73,14 @@
                  C:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : 参见“sprintf”的声明
      1>TestTask.cpp(569): warning C4244: “=”: 从“my_ulonglong”转换到“int”，可能丢失数据
      1>TestTask.cpp(546): warning C4101: “sys”: 未引用的局部变量
-     1>TestTask.cpp(660): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>TestTask.cpp(662): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : 参见“sprintf”的声明
-     1>TestTask.cpp(718): warning C4244: “=”: 从“my_ulonglong”转换到“int”，可能丢失数据
-     1>TestTask.cpp(695): warning C4101: “sys”: 未引用的局部变量
+     1>TestTask.cpp(720): warning C4244: “=”: 从“my_ulonglong”转换到“int”，可能丢失数据
+     1>TestTask.cpp(697): warning C4101: “sys”: 未引用的局部变量
+     1>TestTask.cpp(893): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+     1>TestTask.cpp(905): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+     1>TestTask.cpp(915): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+     1>TestTask.cpp(827): warning C4101: “sys”: 未引用的局部变量
        Link:
          C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\C++项目\APPsocket服务端\x64\Release\socket服务端.exe" /INCREMENTAL:NO /NOLOGO libmysql.lib /MANIFEST:NO /DEBUG /PDB:"D:\C++项目\APPsocket服务端\x64\Release\socket服务端.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\C++项目\APPsocket服务端\x64\Release\socket服务端.lib" /MACHINE:X64 x64\Release\json_reader.obj
          x64\Release\json_value.obj
@@ -106,4 +110,4 @@
 
 生成成功。
 
-已用时间 00:00:14.61
+已用时间 00:00:15.40

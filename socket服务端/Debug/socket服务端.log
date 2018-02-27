@@ -1,4 +1,4 @@
-﻿生成启动时间为 2018/2/24 20:36:07。
+﻿生成启动时间为 2018/2/27 9:37:27。
      1>项目“D:\C++项目\APPsocket服务端\socket服务端\socket服务端.vcxproj”在节点 2 上(rebuild 个目标)。
      1>_PrepareForClean:
          正在删除文件“Debug\socket服务端.lastbuildstate”。
@@ -13,10 +13,11 @@
                  c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(371) : 参见“sprintf”的声明
      1>d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(569): warning C4244: “=”: 从“my_ulonglong”转换到“int”，可能丢失数据
      1>d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(546): warning C4101: “sys”: 未引用的局部变量
-     1>d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(660): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(662): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(371) : 参见“sprintf”的声明
-     1>d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(718): warning C4244: “=”: 从“my_ulonglong”转换到“int”，可能丢失数据
-     1>d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(695): warning C4101: “sys”: 未引用的局部变量
+     1>d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(720): warning C4244: “=”: 从“my_ulonglong”转换到“int”，可能丢失数据
+     1>d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(697): warning C4101: “sys”: 未引用的局部变量
+     1>d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(827): warning C4101: “sys”: 未引用的局部变量
          Task.cpp
          socket服务端.cpp
      1>d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(275): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
@@ -51,7 +52,7 @@
          SocketAPP.cpp
          SaveQueue.cpp
          RecAPP.cpp
-     1>d:\c++项目\appsocket服务端\socket服务端\recapp.cpp(2625): warning C4101: “sys”: 未引用的局部变量
+     1>d:\c++项目\appsocket服务端\socket服务端\recapp.cpp(2624): warning C4101: “sys”: 未引用的局部变量
          MyThreadPool.cpp
          MyThread.cpp
          MyStack.cpp
@@ -92,4 +93,4 @@
 
 生成成功。
 
-已用时间 00:00:16.19
+已用时间 00:00:15.93

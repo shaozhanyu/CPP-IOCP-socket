@@ -156,6 +156,7 @@ int  APPSetWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue);
 int  APPUnSetWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue);
 int  APPConfigWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue);
 int  responseAPPrequest_weilan_data(SOCKET  ClientS , Json::Value  m_json);
+int   WX_Send_CardAlarm(SOCKET ClientS , string  DevCard);
 
 #endif
 

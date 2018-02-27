@@ -1,4 +1,4 @@
-﻿生成启动时间为 2018/2/24 20:35:31。
+﻿生成启动时间为 2018/2/27 9:36:55。
      1>项目“D:\C++项目\APPsocket服务端\socket服务端\socket服务端.vcxproj”在节点 2 上(rebuild 个目标)。
      1>_PrepareForClean:
          正在删除文件“Release\socket服务端.lastbuildstate”。
@@ -19,7 +19,7 @@
          MyThread.cpp
          MyThreadPool.cpp
          RecAPP.cpp
-     1>RecAPP.cpp(2625): warning C4101: “sys”: 未引用的局部变量
+     1>RecAPP.cpp(2624): warning C4101: “sys”: 未引用的局部变量
          SaveQueue.cpp
          SocketAPP.cpp
          SocketTCP.cpp
@@ -58,10 +58,11 @@
                  C:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : 参见“sprintf”的声明
      1>TestTask.cpp(569): warning C4244: “=”: 从“my_ulonglong”转换到“int”，可能丢失数据
      1>TestTask.cpp(546): warning C4101: “sys”: 未引用的局部变量
-     1>TestTask.cpp(660): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>TestTask.cpp(662): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : 参见“sprintf”的声明
-     1>TestTask.cpp(718): warning C4244: “=”: 从“my_ulonglong”转换到“int”，可能丢失数据
-     1>TestTask.cpp(695): warning C4101: “sys”: 未引用的局部变量
+     1>TestTask.cpp(720): warning C4244: “=”: 从“my_ulonglong”转换到“int”，可能丢失数据
+     1>TestTask.cpp(697): warning C4101: “sys”: 未引用的局部变量
+     1>TestTask.cpp(827): warning C4101: “sys”: 未引用的局部变量
        Link:
          C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\C++项目\APPsocket服务端\Release\socket服务端.exe" /INCREMENTAL:NO /NOLOGO libmysql.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\socket服务端.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\C++项目\APPsocket服务端\Release\socket服务端.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\C++项目\APPsocket服务端\Release\socket服务端.lib" /MACHINE:X86 Release\json_reader.obj
          Release\json_value.obj
@@ -93,4 +94,4 @@
 
 生成成功。
 
-已用时间 00:00:18.02
+已用时间 00:00:15.14
