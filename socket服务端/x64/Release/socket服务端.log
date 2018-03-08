@@ -1,4 +1,4 @@
-﻿生成启动时间为 2018/2/27 9:36:39。
+﻿生成启动时间为 2018/3/7 13:00:40。
      1>项目“D:\C++项目\APPsocket服务端\socket服务端\socket服务端.vcxproj”在节点 2 上(rebuild 个目标)。
      1>InitializeBuildStatus:
          正在创建“x64\Release\socket服务端.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
@@ -77,10 +77,10 @@
                  C:\Program Files\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : 参见“sprintf”的声明
      1>TestTask.cpp(720): warning C4244: “=”: 从“my_ulonglong”转换到“int”，可能丢失数据
      1>TestTask.cpp(697): warning C4101: “sys”: 未引用的局部变量
-     1>TestTask.cpp(893): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-     1>TestTask.cpp(905): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-     1>TestTask.cpp(915): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-     1>TestTask.cpp(827): warning C4101: “sys”: 未引用的局部变量
+     1>TestTask.cpp(885): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+     1>TestTask.cpp(911): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+     1>TestTask.cpp(921): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+     1>TestTask.cpp(819): warning C4101: “sys”: 未引用的局部变量
        Link:
          C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\C++项目\APPsocket服务端\x64\Release\socket服务端.exe" /INCREMENTAL:NO /NOLOGO libmysql.lib /MANIFEST:NO /DEBUG /PDB:"D:\C++项目\APPsocket服务端\x64\Release\socket服务端.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\C++项目\APPsocket服务端\x64\Release\socket服务端.lib" /MACHINE:X64 x64\Release\json_reader.obj
          x64\Release\json_value.obj
@@ -110,4 +110,4 @@
 
 生成成功。
 
-已用时间 00:00:15.40
+已用时间 00:00:18.72

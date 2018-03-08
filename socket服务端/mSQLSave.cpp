@@ -58,7 +58,7 @@ int  APPUpdateUserState(SOCKET   ClientS ,Json::Value  mJsonValue)
 		return  -5;
 	}
 	
-	string  m_strToken = "SELECT  username  FROM  regester_user  WHERE token = '" + str_token + "' ";
+	string  m_strToken = "SELECT  username  FROM  register_user  WHERE token = '" + str_token + "' ";
 
 	unsigned int port = 3306;        
         
@@ -197,7 +197,7 @@ int  FindToken(string  token)
     const char host[] = "localhost";    
     char table[] = "bike";    
 
-	string  mSQLStr="SELECT count(*) FROM regester_user WHERE token = '" + token + "'";
+	string  mSQLStr="SELECT count(*) FROM register_user WHERE token = '" + token + "'";
 	
 	//cout<< mSQLStr<<endl;
 

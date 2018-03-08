@@ -443,7 +443,7 @@ int  SaveHardStateInfo(SOCKET   ClientS , Json::Value  mJsonValue)
 	//UPDATE不会新增,是覆盖,有几条就覆盖几条。
 	
 	//string  mSQLStr="UPDATE  user_bike  SET  username = '" + str_username + "', card = '" + str_card + "', phone = '" + str_phone +"', bikename = '" + str_bikename +
-	//	"', bikecolor = '" + str_bikecolor + "', biketype = '"+str_biketype + "', regester_time ='2017-5-10-10:02:05' ";
+	//	"', bikecolor = '" + str_bikecolor + "', biketype = '"+str_biketype + "', register_time ='2017-5-10-10:02:05' ";
 
 	//cout<<mSQLStr<<endl;
 
@@ -606,7 +606,7 @@ int   SaveGPSData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len)
 	if(!res  )
 	{		
 		cout << "SaveGPS-----sucess!\n" << endl;
-		WX_Send_CardAlarm(ClientS , str_card);
+		WX_Send_CardAlarm(ClientS , str_card , str_lock);
 		return 0; 
 		Json::Value root;             // 表示整个 json 对象
 		root["errno"] = Json::Value(0);     // 新建一个 Key（名为：key_string），赋予字符串值："value_string"。
@@ -755,6 +755,9 @@ int   SaveBaseStationData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  in
 	mysql_close(&myCont);//及时关闭mysql连接，否则占用连接数
 	if(!res  )
 	{		
+		cout << "SaveBaseStation-----sucess!\n" << endl;
+		WX_Send_CardAlarm(ClientS , str_card , str_lock);
+		return 0; 
 		Json::Value root;             // 表示整个 json 对象
 		root["errno"] = Json::Value(0);     // 新建一个 Key（名为：key_string），赋予字符串值："value_string"。
 		root["error"] = Json::Value("sucess"); // 新建一个 Key（名为：key_number），赋予数值：12345。	
@@ -788,7 +791,7 @@ int   SaveBaseStationData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  in
 }
 
 //////////////////////查找等待设定的设备表，并发送给硬件//////////////////////////////////////////
-int   WX_Send_CardAlarm(SOCKET ClientS , string  DevCard)
+int   WX_Send_CardAlarm(SOCKET ClientS , string  DevCard , string DevLock)
 {
 	bool getsucess =false;
 	const char user[] = "root";         
@@ -796,25 +799,14 @@ int   WX_Send_CardAlarm(SOCKET ClientS , string  DevCard)
     const char host[] = "localhost";  
 	unsigned int port = 3306;   
     char table[] = "bike";    
-	char bike_username[32]="";
-	char bike_userpwd[32]="";
-	char bike_token[66]="";
-	int  bike_app_socket=0;
-	int  bike_setlock=0;
-	int  bike_update_card =0;
 	
-	int  bike_card_socket =1;
-	char bike_card_state='I';
-	int  bike_card_lock=0;
-	char bike_bike_name[64]="";
-	char bike_gps[200]=",A,3158.4608,N,11848.3737,E,10.05";
-	struct tm  ;  
+	struct tm ;  
 
 	string   tos ,str_token,str_card ,str_gps, str_username;  
 	string   str_lock;
-	string   radius;
-	string   weilan_gps;
-	string   weilan_radius;
+	//string   radius;
+	//string   weilan_gps;
+	//string   weilan_radius;
 	string   allow_alarm;
 	string  m_strToken = "SELECT  *  FROM  set_card_alarm  WHERE card = '" + DevCard + "' ORDER BY card_id ASC LIMIT 1 ";
 	            
@@ -839,7 +831,7 @@ int   WX_Send_CardAlarm(SOCKET ClientS , string  DevCard)
 		mysql_close(&myCont);
 		return -2;
     }
-	//cout<<m_strToken<<endl;
+	//cout<<m_strToken.c_str()<<endl;
 	getsucess =false;
 	res = mysql_query(&myCont, (const  char *)m_strToken.c_str()); //执行SQL语句,通过token查找username
 	if(!res  )
@@ -894,6 +886,20 @@ int   WX_Send_CardAlarm(SOCKET ClientS , string  DevCard)
 		return 0;
 	}
 
+	if( 0 == allow_alarm.compare(DevLock))//比对当前设防状态是否一致，一致说明已经操作过，删除设防记录
+	{
+		m_strToken = "DELETE    FROM  set_card_alarm   WHERE card = '" + DevCard + "' ORDER BY time ASC LIMIT 1 ";
+		res = mysql_query(&myCont, (const  char *)m_strToken.c_str()); //执行SQL语句,通过token查找username
+		mysql_close(&myCont);	
+		if (!res  )
+		{
+			return 0;
+
+		}
+		else
+			return -2;
+	}
+	
 	if( 0 == allow_alarm.compare("1"))
 	{
 		Json::Value root;             // 表示整个 json 对象
@@ -915,16 +921,6 @@ int   WX_Send_CardAlarm(SOCKET ClientS , string  DevCard)
 		send(ClientS , str.c_str(), str.length() , 0);  // 发送信息
 	}
 
-	m_strToken = "DELETE    FROM  set_card_alarm   WHERE card = '" + DevCard + "' ORDER BY time ASC LIMIT 1 ";
-	res = mysql_query(&myCont, (const  char *)m_strToken.c_str()); //执行SQL语句,通过token查找username
-	if(!res  )
-	{			
-
-		mysql_close(&myCont);
-
-		return 0;
-		
-	}
 	mysql_close(&myCont);
 
 	return -1;

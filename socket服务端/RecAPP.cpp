@@ -494,7 +494,7 @@ int  responseAPPregester(SOCKET   ClientS ,int Command, char * src, unsigned  in
 	}
 ////
 	
-	string  m_checkuser = "SELECT  *  FROM  regester_user  WHERE username = '" + m_username + "'";
+	string  m_checkuser = "SELECT  *  FROM  register_user  WHERE username = '" + m_username + "'";
 	cout<< m_checkuser<<endl;
 	getsucess =false;
 	res = mysql_query(&myCont, (const  char *)m_checkuser.c_str()); //执行SQL语句,通过token查找username
@@ -538,7 +538,7 @@ int  responseAPPregester(SOCKET   ClientS ,int Command, char * src, unsigned  in
 		return -4;
 	}
 ////
-	string  m_reguser = "INSERT  INTO  regester_user ( username , userpwd, token ,phone , regester_time )   VALUES( '" +
+	string  m_reguser = "INSERT  INTO  register_user ( username , userpwd, token ,phone , register_time )   VALUES( '" +
 		m_username + "','" + m_userpwd + "','9m7u8N7x5AFEE2rvfioikjde215CTT','"+ m_phone + "', NOW(3) ) ";
 
 	cout<<m_reguser<<endl;
@@ -612,7 +612,7 @@ int  responseAPPdenglu(SOCKET   ClientS ,int Command, char * src, unsigned  int 
     const char host[] = "localhost";    
     char table[] = "bike";    
 
-	string  mSQLStr="SELECT userpwd  FROM regester_user WHERE username = '" + m_username + "'";
+	string  mSQLStr="SELECT userpwd  FROM register_user WHERE username = '" + m_username + "'";
 	
 	//cout<< mSQLStr<<endl;
 
@@ -678,7 +678,7 @@ int  responseAPPdenglu(SOCKET   ClientS ,int Command, char * src, unsigned  int 
 			
 			MakeUUID();//生成UUID
 			string  uuid_str  = m_uuid;
-			string  UpdateCardStateSQL= "UPDATE regester_user SET  token ='" + uuid_str
+			string  UpdateCardStateSQL= "UPDATE register_user SET  token ='" + uuid_str
 				+"' WHERE  username='"+m_username+"'";
 			///////////////////////////////////////////////////////////////////////
 			res = mysql_query(&myCont, (const  char *)UpdateCardStateSQL.c_str()); //执行SQL语句
@@ -790,7 +790,7 @@ int  responseAPPbangding(SOCKET   ClientS ,Json::Value  mJsonValue)
 
 	//string  mstr_ziduan = mJsonValue["token"].asString();
 
-	string  m_strToken = "SELECT  username  FROM  regester_user  WHERE token = '" + str_token + "'";
+	string  m_strToken = "SELECT  username  FROM  register_user  WHERE token = '" + str_token + "'";
 	SYSTEMTIME sys; 
 	GetLocalTime( &sys ); 
 	printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
@@ -857,16 +857,16 @@ int  responseAPPbangding(SOCKET   ClientS ,Json::Value  mJsonValue)
 ///////////////////////////////////////////////////////////////////////	
 	//INSERT 会新增一条
 	//on duplicate key update  需要设置一个主键，不自动增长，遇到主键冲突，执行后面的updata内容
-	string  mSQLStr = "INSERT  INTO  user_bike(bike_id , username, card,phone,bikename,bikecolor,biketype,regester_time)   VALUES( 1, '"
+	string  mSQLStr = "INSERT  INTO  user_bike(bike_id , username, card,phone,bikename,bikecolor,biketype,register_time)   VALUES( 1, '"
 		+ str_username + "','"+ str_card + "','"+ str_phone + "','"+ str_bikename + "','"+ str_bikecolor+ "','"+ str_biketype
 		+ "', NOW(3)) on duplicate key update  bike_id = 1 , username = '" + str_username + "', card = '" + str_card + "', phone = '" + str_phone +"', bikename = '" + str_bikename +
-		"', bikecolor = '" + str_bikecolor + "', biketype = '"+str_biketype + "', regester_time =  NOW(3) " ;
+		"', bikecolor = '" + str_bikecolor + "', biketype = '"+str_biketype + "', register_time =  NOW(3) " ;
 	
 
 	//UPDATE不会新增,是覆盖,有几条就覆盖几条。
 	
 	//string  mSQLStr="UPDATE  user_bike  SET  username = '" + str_username + "', card = '" + str_card + "', phone = '" + str_phone +"', bikename = '" + str_bikename +
-	//	"', bikecolor = '" + str_bikecolor + "', biketype = '"+str_biketype + "', regester_time ='2017-5-10-10:02:05' ";
+	//	"', bikecolor = '" + str_bikecolor + "', biketype = '"+str_biketype + "', register_time ='2017-5-10-10:02:05' ";
 
 	//cout<<mSQLStr<<endl;
 	
@@ -1046,7 +1046,7 @@ int  responseAPPbind (SOCKET   ClientS ,int Command, char * src, unsigned  int  
 	}
 	//string  mstr_ziduan = mJsonValue["token"].asString();
 
-	string  m_strToken = "SELECT  userpwd  FROM  regester_user  WHERE username = '" + str_username + "'";
+	string  m_strToken = "SELECT  userpwd  FROM  register_user  WHERE username = '" + str_username + "'";
 	//SYSTEMTIME sys; 
 	//GetLocalTime( &sys ); 
 	//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
@@ -1138,15 +1138,15 @@ int  responseAPPbind (SOCKET   ClientS ,int Command, char * src, unsigned  int  
 ///////////////////////////////////////////////////////////////////////	
 	//INSERT 会新增一条
 	//on duplicate key update  需要设置一个主键，不自动增长，遇到主键冲突，执行后面的updata内容
-	 mSQLStr = "INSERT  INTO  user_bike(  username, card,phone,bikename,bikecolor,biketype,regester_time)   VALUES( '"
+	 mSQLStr = "INSERT  INTO  user_bike(  username, card,phone,bikename,bikecolor,biketype,register_time)   VALUES( '"
 		+ str_username + "','"+ str_card + "','"+ str_phone + "','"+ str_bikename + "','"+ str_bikecolor+ "','"+ str_biketype
 		+ "', NOW(3))" ;
 	//UPDATE不会新增,是覆盖,有几条就覆盖几条。
 	
 	//string  mSQLStr="UPDATE  user_bike  SET  username = '" + str_username + "', card = '" + str_card + "', phone = '" + str_phone +"', bikename = '" + str_bikename +
-	//	"', bikecolor = '" + str_bikecolor + "', biketype = '"+str_biketype + "', regester_time ='2017-5-10-10:02:05' ";
+	//	"', bikecolor = '" + str_bikecolor + "', biketype = '"+str_biketype + "', register_time ='2017-5-10-10:02:05' ";
 
-	//cout<<mSQLStr<<endl;
+	cout<<mSQLStr<<endl;
 	
 	res = mysql_query(&myCont, (const  char *)mSQLStr.c_str()); //执行SQL语句,添加一条记录
 	if(!res  )
@@ -1217,7 +1217,7 @@ int  responseAPPgetstate(SOCKET   ClientS ,Json::Value  mJsonValue)
 	}
 
 	//string  mstr_ziduan = mJsonValue["token"].asString();
-	string  m_strname = "SELECT  username  FROM  regester_user  WHERE token = '" + str_token + "'";
+	string  m_strname = "SELECT  username  FROM  register_user  WHERE token = '" + str_token + "'";
 	SYSTEMTIME sys; 
 	GetLocalTime( &sys ); 
 	printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
@@ -1451,7 +1451,7 @@ int  responseAPPjiebang(SOCKET   ClientS ,Json::Value  mJsonValue)
 	}
 
 
-	string  m_strToken = "SELECT  username  FROM  regester_user  WHERE token = '" + str_token + "'";
+	string  m_strToken = "SELECT  username  FROM  register_user  WHERE token = '" + str_token + "'";
 	
     mysql_init(&myCont);//初始化mysql
 
@@ -1581,7 +1581,7 @@ int  responseAPPgetalldevicestate(SOCKET   ClientS ,Json::Value  mJsonValue)
 	}
 	
 	//string  mstr_ziduan = mJsonValue["token"].asString();
-	string  m_strname = "SELECT  username  FROM  regester_user  WHERE token = '" + str_token + "'";
+	string  m_strname = "SELECT  username  FROM  register_user  WHERE token = '" + str_token + "'";
 	//SYSTEMTIME sys; 
 	//GetLocalTime( &sys ); 
 	//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
@@ -1897,7 +1897,7 @@ int  APPSetWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue)
 	}
 	
 	
-	string  m_strToken = "SELECT  username  FROM  regester_user  WHERE token = '" + str_token + "' ";
+	string  m_strToken = "SELECT  username  FROM  register_user  WHERE token = '" + str_token + "' ";
 
 	unsigned int port = 3306;        
         
@@ -2082,7 +2082,7 @@ int  APPUnSetWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue)
 		cout<< "json数据类型错误gps应该为string"<<endl;
 		return  -5;
 	}
-	string  m_strToken = "SELECT  username  FROM  regester_user  WHERE token = '" + str_token + "' ";
+	string  m_strToken = "SELECT  username  FROM  register_user  WHERE token = '" + str_token + "' ";
 
 	unsigned int port = 3306;        
         
@@ -2266,7 +2266,7 @@ int  APPConfigWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue)
 		return  -5;
 	}
 	
-	string  m_strToken = "SELECT  username  FROM  regester_user  WHERE token = '" + str_token + "' ";
+	string  m_strToken = "SELECT  username  FROM  register_user  WHERE token = '" + str_token + "' ";
 
 	unsigned int port = 3306;        
         
@@ -2411,7 +2411,7 @@ int  responseAPPrequest_weilan_alarm(SOCKET   ClientS ,Json::Value  mJsonValue)
 	}
 	
 	//string  mstr_ziduan = mJsonValue["token"].asString();
-	string  m_strname = "SELECT  username  FROM  regester_user  WHERE token = '" + str_token + "'";
+	string  m_strname = "SELECT  username  FROM  register_user  WHERE token = '" + str_token + "'";
 	//SYSTEMTIME sys; 
 	//GetLocalTime( &sys ); 
 	//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
@@ -2900,7 +2900,7 @@ int  responseAPPrequest_weilan_data(SOCKET   ClientS ,Json::Value  mJsonValue)
 		return  -5;
 	}
 	//string  mstr_ziduan = mJsonValue["token"].asString();
-	string  m_strname = "SELECT  username  FROM  regester_user  WHERE token = '" + str_token + "'";
+	string  m_strname = "SELECT  username  FROM  register_user  WHERE token = '" + str_token + "'";
 	//SYSTEMTIME sys; 
 	//GetLocalTime( &sys ); 
 	//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
