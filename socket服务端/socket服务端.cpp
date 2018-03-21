@@ -1,4 +1,4 @@
-// socket服务端.cpp : 定义控制台应用程序的入口点。
+//// socket服务端.cpp : 定义控制台应用程序的入口点。
 ///////////////////////////////////////////////
 #pragma once
 #include "stdafx.h"
@@ -7,7 +7,7 @@
 #include <winsock2.h>
 #include <ObjBase.h>
 //#include <pthread.h>
-#include <hash_map>//哈希算法库
+//#include <hash_map>//哈希算法库
 #include <stdio.h>
 #include <time.h>
 #include <string>// 注意是C++标准库是<string>，不是<string.h>，带.h的是C语言中的头文件
@@ -179,7 +179,7 @@ int   socket_accept_thread(void *ptr)
 		pContextKey->clientSocket = IOCPsocket.m_newClinetSockfd;//保存当前连接号
 		pContextKey->opType =  RECV_POSTED;
 
-		CreateIoCompletionPort((HANDLE)IOCPsocket.m_newClinetSockfd, IOCPsocket.m_CompletionPort, (DWORD)pContextKey, 0);//当前连接绑定到IOCP完成端口
+		CreateIoCompletionPort((HANDLE)IOCPsocket.m_newClinetSockfd, IOCPsocket.m_CompletionPort, (ULONG_PTR)pContextKey, 0);//当前连接绑定到IOCP完成端口
 
 		//投递第一个rev信息
 		DWORD Flags = 0;
@@ -241,7 +241,7 @@ int   APP_accept_thread(void *ptr)
 		pContextKey->clientSocket = APPsocket.m_newClinetSockfd;//保存当前socket连接号
 		pContextKey->opType =  APP_RECV_POSTED;
 
-		CreateIoCompletionPort((HANDLE)APPsocket.m_newClinetSockfd, APPsocket.m_CompletionPort, (DWORD)pContextKey, 0);//当前socket绑定到IOCP完成端口
+		CreateIoCompletionPort((HANDLE)APPsocket.m_newClinetSockfd, APPsocket.m_CompletionPort, (ULONG_PTR)pContextKey, 0);//当前socket绑定到IOCP完成端口
 
 		//投递第一个rev信息;
 		DWORD Flags = 0;
@@ -716,6 +716,7 @@ SaveGPSData(1234 , (char*)(GpsData+23) , GpsData[14]*256+GpsData[15] );
 
 }
 
+#if  0
 /*
 *创建hash表
 */
@@ -801,3 +802,4 @@ final:
   free(pNode); 
   return TRUE; 
 } 
+#endif

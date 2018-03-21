@@ -1,4 +1,5 @@
 
+#include <winsock2.h>
 #include "TestTask.h"
 #include "mcom.h"
 #include "stdio.h"
@@ -231,6 +232,14 @@ char   RecClientData(SOCKET ClientS, unsigned char * src, unsigned  int  len )
 								else
 								loop=0;	
 							break;
+							case  CLIENT_ALARM_INFO:
+								SaveClientData( ClientS , *(pdata+4) ,(pdata+DATA_HEAD_LEN) , *(pdata+14)*256+ *(pdata+15) );//解析网络数据
+								length =  DataLen-(pdata-srcdat)- (DATA_HEAD_LEN+*(pdata+14)*256+ *(pdata+15)+DATA_END_LEN);
+								if( length >= APP_MIN_DATA_LEN )//判断剩余数据长度
+								pdata = pdata+DATA_HEAD_LEN+*(pdata+14)*256+ *(pdata+15)+DATA_END_LEN;//判断剩余数据长度
+								else
+								loop=0;
+								break;
 							default: 
 							loop =0;	
 							break;
@@ -313,9 +322,10 @@ char  SaveDataSQL(SOCKET   ClientS ,int Command, char * src, unsigned  int  len)
 			return 0;
 		break;
 		case  CLIENT_BASE_STATION_INFO: //硬件上传无GPS的基站信息
-
 			SaveBaseStationData(ClientS , (unsigned  char *)src , len);
-
+			break;
+		case  CLIENT_ALARM_INFO:  //保存报警信息
+			SaveAlarmData(ClientS , (unsigned  char *)src , len);
 			break;
 		default: 
 			cout<<"队列数据命令字错误！"<<endl;				
@@ -356,7 +366,7 @@ int  SaveHardStateInfo(SOCKET   ClientS , Json::Value  mJsonValue)
 		return  -5;
 	}
 	
-	str_soc = to_string((_ULonglong)ClientS);//socket连接号,整型转string
+	str_soc = to_string((long)ClientS);//socket连接号,整型转string
 	
 	if( GetVaule_CheckStr(&str_state , mJsonValue , "card_state") == 0 )
 	{
@@ -524,7 +534,7 @@ int   SaveGPSData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len)
 	//send(ClientS , (char *)(src+2), 8, 0);  // 发送信息 
 	//return 0;
 	
-	str_soc = to_string((_Longlong)ClientS);//socket连接号,整型转string
+	str_soc = to_string((long)ClientS);//socket连接号,整型转string
 	
 	if('O'==*(src+6))
 	str_state="Out";
@@ -675,7 +685,7 @@ int   SaveBaseStationData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  in
 	//send(ClientS , (char *)(src+2), 8, 0);  // 发送信息 
 	//return 0;
 	
-	str_soc = to_string((_Longlong)ClientS);//socket连接号,整型转string
+	str_soc = to_string((long)ClientS);//socket连接号,整型转string
 	
 	if('O'==*(src+6))
 	str_state="Out";
@@ -789,7 +799,149 @@ int   SaveBaseStationData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  in
 	return -1;
 
 }
+////////////////////////////保存报警列表////////////////////////////////////////
+int   SaveAlarmData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len)
+{
+	//time_t now_time; 
+	int i=0;
+	bool  getsucess =false;
+	const char user[] = "root";         
+    const char pswd[] = "123456";        
+    const char host[] = "localhost";    
+    char table[] = "bike";  
+	unsigned int port = 3306;   
 
+	MYSQL myCont;
+    MYSQL_RES *result;
+    int res;
+	int  num_row,num_col; 
+
+	string   str_soc,str_username ,str_card,str_state,str_lock,str_base_station,str_time; 
+
+	char  temp[200];
+	for(i=0;i<4;i++)
+		sprintf(&temp[2*i], "%02x", *(src+2+i)); //小写16 进制，宽度占2个位置，右对齐，不足补0
+	
+	temp[8]='\0';
+	//str_card = getNullStr(temp);
+	str_card = temp;
+	//if( *(src+2+3)< 50 )
+	//printf("%s\n",str_card);//打印卡号
+
+	//EnterCriticalSection(&card_list_Lock);//待存储数据加锁
+
+	//card_list  +=str_card;
+	//card_list += "\r\n";
+	//LeaveCriticalSection(&card_list_Lock);//解锁
+	//send(ClientS , (char *)(src+2), 8, 0);  // 发送信息 
+	//return 0;
+	
+	str_soc = to_string((long)ClientS);//socket连接号,整型转string
+	
+	if('1'==*(src+6))
+	str_state="Out";
+	else
+	str_state="In";
+
+	if(1 ==*(src+7))
+	str_lock= "1";
+	else
+	str_lock= "0";
+	string str_send ="1";
+	string  m_strToken = "SELECT  card  FROM  cardinfo  WHERE card = '" + str_card + "'";
+
+	SYSTEMTIME sys; 
+	//GetLocalTime( &sys ); 
+	//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
+
+    mysql_init(&myCont);//初始化mysql
+
+    if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
+    {
+		//mysql_query(&myCont, "SET NAMES utf8"); //设置编码格式       
+    }
+    else
+    {
+        cout << "connect failed!\n" << endl;
+		mysql_close(&myCont);
+		return -2;
+    }
+///////////////////////////////////////////////////////////////////////////////////
+	//cout<<m_strToken<<endl;
+	res = mysql_query(&myCont, (const  char *)m_strToken.c_str()); //执行SQL语句,通过token查找username
+	if(!res  )
+	{				
+		//保存查询到的数据到result
+        result = mysql_store_result(&myCont);
+        num_row=mysql_num_rows(result); //读取行数
+		num_col=mysql_num_fields(result); //读取列数
+		//printf("row: %d,col: %d\n",num_row,num_col);//打印行列个数
+	    MYSQL_FIELD* fields = mysql_fetch_fields(result); //返回所有字段结构的数组
+		if(num_row >0 )
+		{
+			getsucess =true;
+		}
+		else
+			getsucess = false;
+
+		mysql_free_result(result); //释放缓存，特别注意，不释放会导致内存增长
+
+	}
+	if(getsucess == true)
+	{
+
+	}
+	else
+	{
+		mysql_close(&myCont);
+		cout << "报警信息保存---查询card失败!\n" << endl;
+		return -4;
+	}
+	
+///////////////////////////////////////////////////////////////////////	
+	//INSERT 会新增一条
+	//on duplicate key update  需要设置一个主键，不自动增长，遇到主键冲突，执行后面的updata内容
+	string  mSQLStr = "INSERT  INTO  card_alarm(  card , card_state , card_lock ,send,time )   VALUES( '" +
+		str_card + "', '"+ str_state + "',"+ str_lock + ","+ str_send+ ", NOW(3) ) ";
+
+	res = mysql_query(&myCont, (const  char *)mSQLStr.c_str()); //执行SQL语句,添加一条记录
+	
+	mysql_close(&myCont);//及时关闭mysql连接，否则占用连接数
+	if(!res  )
+	{		
+		cout << "SaveCardAlarm-----sucess!\n" << endl;
+		WX_Send_CardAlarm(ClientS , str_card , str_lock);
+		return 0; 
+		Json::Value root;             // 表示整个 json 对象
+		root["errno"] = Json::Value(0);     // 新建一个 Key（名为：key_string），赋予字符串值："value_string"。
+		root["error"] = Json::Value("sucess"); // 新建一个 Key（名为：key_number），赋予数值：12345。	
+		Json::FastWriter  fast_writer;//查看json内容对象
+		string str = fast_writer.write(root); //json转string			
+		send(ClientS , (char *)str.data(), (int)str.length(), 0);  // 发送信息 	
+
+		//GetLocalTime( &sys ); 
+		//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
+		return 0;  		
+	}
+	else
+	{
+		Json::Value root;             // 表示整个 json 对象
+		root["errno"] = Json::Value(1);     // 新建一个 Key（名为：key_string），赋予字符串值："value_string"。
+		root["error"] = Json::Value("save_alarm_error");             // 新建一个 Key（名为：key_number），赋予数值：12345。
+		
+		Json::FastWriter  fast_writer;//查看json内容对象
+		string str = fast_writer.write(root); //json转string
+
+		//send(ClientS , (char *)str.data(), (int)str.length(), 0);  // 发送信息 
+		cout << "Insert Alarm SQL error!\n" << endl;
+		return -3;
+		
+	}
+    mysql_close(&myCont);
+	
+	return -1;
+
+}
 //////////////////////查找等待设定的设备表，并发送给硬件//////////////////////////////////////////
 int   WX_Send_CardAlarm(SOCKET ClientS , string  DevCard , string DevLock)
 {

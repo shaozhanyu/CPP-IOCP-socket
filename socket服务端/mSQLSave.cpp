@@ -39,7 +39,7 @@ int  APPUpdateUserState(SOCKET   ClientS ,Json::Value  mJsonValue)
 	string   tos ,str_token,str_card , str_username;  
 	string  str_lock;
 
-	tos = to_string((_ULonglong)ClientS);	
+	tos = to_string((long)ClientS);	
 
 	if(mJsonValue["setlock"] == 1)
 		str_lock = "1";

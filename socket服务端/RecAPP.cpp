@@ -1866,11 +1866,11 @@ int  APPSetWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue)
 	string  str_lock;
 	string   radius;
 
-	tos = to_string((_ULonglong)ClientS);	
+	tos = to_string((long)ClientS);	
 	
 	if(mJsonValue["radius"].isInt())
 	{
-		radius = to_string( (_Longlong)mJsonValue["radius"].asInt());
+		radius = to_string( (long)mJsonValue["radius"].asInt());
 	}
 	else
 	{		
@@ -2052,7 +2052,7 @@ int  APPUnSetWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue)
 	string  str_lock;
 	string   radius;
 
-	tos = to_string((_ULonglong)ClientS);	
+	tos = to_string((long)ClientS);	
 
 	if(mJsonValue["radius"].isInt())
 	{
@@ -2238,7 +2238,7 @@ int  APPConfigWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue)
 	string  str_lock;
 	string   radius , allow_alarm;
 
-	tos = to_string((_ULonglong)ClientS);	
+	tos = to_string((long)ClientS);	
 
 	//cout<< mJsonValue["allow_alarm"] << endl;
 

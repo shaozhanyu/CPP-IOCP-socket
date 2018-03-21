@@ -61,6 +61,7 @@ typedef   struct   HardUnit{   //自定义用来插入队列中数据结构
 #define     CLIENT_TO_SEVER       0x5B
 #define     CLIENT_GPS_INFO       0x5C    //硬件上传GPS定位的信息
 #define     CLIENT_BASE_STATION_INFO       0x5D    //硬件上传无GPS定位的信息，上传基站信息
+#define     CLIENT_ALARM_INFO     0X5E
 ////////////////////////////////////////////////////
 #define     APP_SET_LOCK          0x2A    //APP设置锁车请求
 #define     APP_SET_UNLOCK        0x2B    //APP设置解锁请求
@@ -156,6 +157,7 @@ int  APPSetWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue);
 int  APPUnSetWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue);
 int  APPConfigWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue);
 int  responseAPPrequest_weilan_data(SOCKET  ClientS , Json::Value  m_json);
+int   SaveAlarmData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len);
 int   WX_Send_CardAlarm(SOCKET ClientS , string  DevCard , string DevLock);
 
 #endif
