@@ -159,6 +159,8 @@ int  APPConfigWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue);
 int  responseAPPrequest_weilan_data(SOCKET  ClientS , Json::Value  m_json);
 int   SaveAlarmData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len);
 int   WX_Send_CardAlarm(SOCKET ClientS , string  DevCard , string DevLock);
+int   WX_Send_MotorLock(SOCKET ClientS, string  DevCard, string DevLock);
+int   WX_Send_DeviceOpen(SOCKET ClientS, string  DevCard, string DevLock);
 
 #endif
 

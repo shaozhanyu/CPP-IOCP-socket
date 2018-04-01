@@ -79,18 +79,26 @@ d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(579): warning C4244
 d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(521): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(1772): note: 参见“sprintf”的声明
 d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(556): warning C4101: “sys”: 未引用的局部变量
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(730): warning C4244: “=”: 从“my_ulonglong”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(672): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(732): warning C4244: “=”: 从“my_ulonglong”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(674): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(1772): note: 参见“sprintf”的声明
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(707): warning C4101: “sys”: 未引用的局部变量
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(876): warning C4244: “=”: 从“my_ulonglong”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(823): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(709): warning C4101: “sys”: 未引用的局部变量
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(880): warning C4244: “=”: 从“my_ulonglong”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(827): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(1772): note: 参见“sprintf”的声明
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(853): warning C4101: “sys”: 未引用的局部变量
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1037): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1063): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1073): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(971): warning C4101: “sys”: 未引用的局部变量
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(857): warning C4101: “sys”: 未引用的局部变量
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1043): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1069): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1079): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(977): warning C4101: “sys”: 未引用的局部变量
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1180): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1206): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1216): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1114): warning C4101: “sys”: 未引用的局部变量
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1317): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1343): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1353): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1251): warning C4101: “sys”: 未引用的局部变量
   正在生成代码...
 LINK : warning LNK4075: 忽略“/INCREMENTAL”(由于“/PROFILE”规范)
 json_reader.obj : warning LNK4075: 忽略“/EDITANDCONTINUE”(由于“/OPT:REF”规范)
