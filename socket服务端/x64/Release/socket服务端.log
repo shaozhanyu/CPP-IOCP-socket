@@ -23,13 +23,13 @@ d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1069): warning C426
 d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1079): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
 d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(977): warning C4101: “sys”: 未引用的局部变量
 d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1180): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1206): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1216): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1195): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1205): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
 d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1114): warning C4101: “sys”: 未引用的局部变量
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1317): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1343): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1353): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1251): warning C4101: “sys”: 未引用的局部变量
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1319): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1334): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1344): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1253): warning C4101: “sys”: 未引用的局部变量
   Task.cpp
   socket服务端.cpp
 d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(275): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.

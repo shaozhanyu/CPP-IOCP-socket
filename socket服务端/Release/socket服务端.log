@@ -71,7 +71,7 @@ d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(827): warning C4996
 d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(857): warning C4101: “sys”: 未引用的局部变量
 d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(977): warning C4101: “sys”: 未引用的局部变量
 d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1114): warning C4101: “sys”: 未引用的局部变量
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1251): warning C4101: “sys”: 未引用的局部变量
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1253): warning C4101: “sys”: 未引用的局部变量
   正在生成代码
   All 1473 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   已完成代码的生成

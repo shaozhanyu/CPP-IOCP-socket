@@ -1181,19 +1181,8 @@ int   WX_Send_MotorLock(SOCKET ClientS, string  DevCard, string DevLock)
 		return 0;
 	}
 
-	if (0 == allow_alarm.compare(DevLock))//比对当前设防状态是否一致，一致说明已经操作过，删除设防记录
-	{
-		m_strToken = "DELETE    FROM  set_motor_lock   WHERE card = '" + DevCard + "' ORDER BY time ASC LIMIT 1 ";
-		res = mysql_query(&myCont, (const  char *)m_strToken.c_str()); //执行SQL语句,通过token查找username
-		mysql_close(&myCont);
-		if (!res)
-		{
-			return 0;
-
-		}
-		else
-			return -2;
-	}
+	//if (0 == allow_alarm.compare(DevLock))//比对当前设防状态是否一致，一致说明已经操作过，删除设防记录
+	
 
 	if (0 == allow_alarm.compare("1"))
 	{
@@ -1214,6 +1203,19 @@ int   WX_Send_MotorLock(SOCKET ClientS, string  DevCard, string DevLock)
 		Json::FastWriter  fast_writer;//查看json内容对象
 		string str = fast_writer.write(root); //json转string	
 		send(ClientS, str.c_str(), str.length(), 0);  // 发送信息
+	}
+
+	{
+		m_strToken = "DELETE    FROM  set_motor_lock   WHERE card = '" + DevCard + "' ORDER BY time ASC LIMIT 1 ";
+		res = mysql_query(&myCont, (const  char *)m_strToken.c_str()); //执行SQL语句,通过token查找username
+		mysql_close(&myCont);
+		if (!res)
+		{
+			return 0;
+
+		}
+		else
+			return -2;
 	}
 
 	mysql_close(&myCont);
@@ -1318,19 +1320,8 @@ int   WX_Send_DeviceOpen(SOCKET ClientS, string  DevCard, string DevLock)
 		return 0;
 	}
 
-	if (0 == allow_alarm.compare(DevLock))//比对当前设防状态是否一致，一致说明已经操作过，删除设防记录
-	{
-		m_strToken = "DELETE    FROM  set_device_open   WHERE card = '" + DevCard + "' ORDER BY time ASC LIMIT 1 ";
-		res = mysql_query(&myCont, (const  char *)m_strToken.c_str()); //执行SQL语句,通过token查找username
-		mysql_close(&myCont);
-		if (!res)
-		{
-			return 0;
-
-		}
-		else
-			return -2;
-	}
+	//if (0 == allow_alarm.compare(DevLock))//比对当前设防状态是否一致，一致说明已经操作过，删除设防记录
+	
 
 	if (0 == allow_alarm.compare("1"))
 	{
@@ -1353,6 +1344,18 @@ int   WX_Send_DeviceOpen(SOCKET ClientS, string  DevCard, string DevLock)
 		send(ClientS, str.c_str(), str.length(), 0);  // 发送信息
 	}
 
+	{
+		m_strToken = "DELETE    FROM  set_device_open   WHERE card = '" + DevCard + "' ORDER BY time ASC LIMIT 1 ";
+		res = mysql_query(&myCont, (const  char *)m_strToken.c_str()); //执行SQL语句,通过token查找username
+		mysql_close(&myCont);
+		if (!res)
+		{
+			return 0;
+
+		}
+		else
+			return -2;
+	}
 	mysql_close(&myCont);
 
 	return -1;

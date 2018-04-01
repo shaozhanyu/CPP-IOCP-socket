@@ -92,13 +92,13 @@ d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1069): warning C426
 d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1079): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
 d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(977): warning C4101: “sys”: 未引用的局部变量
 d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1180): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1206): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1216): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1195): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1205): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
 d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1114): warning C4101: “sys”: 未引用的局部变量
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1317): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1343): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1353): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1251): warning C4101: “sys”: 未引用的局部变量
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1319): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1334): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1344): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1253): warning C4101: “sys”: 未引用的局部变量
   正在生成代码...
 LINK : warning LNK4075: 忽略“/INCREMENTAL”(由于“/PROFILE”规范)
 json_reader.obj : warning LNK4075: 忽略“/EDITANDCONTINUE”(由于“/OPT:REF”规范)
