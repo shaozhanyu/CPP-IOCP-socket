@@ -1152,6 +1152,7 @@ int   WX_SendBufang_ToHard( )
 		root["errno"] = Json::Value(0);     // 新建一个 Key（名为：key_string），赋予字符串值："value_string"。
 		root["error"] = Json::Value("sucess"); // 新建一个 Key（名为：key_number），赋予数值：12345。	
 		root["lock"] = Json::Value("setlock");
+		root["card"] = Json::Value(str_card);
 		Json::FastWriter  fast_writer;//查看json内容对象
 		string str = fast_writer.write(root); //json转string	
 		send(ClientS , str.c_str(), str.length() , 0);  // 发送信息
@@ -1163,6 +1164,7 @@ int   WX_SendBufang_ToHard( )
 		root["errno"] = Json::Value(0);     // 新建一个 Key（名为：key_string），赋予字符串值："value_string"。
 		root["error"] = Json::Value("sucess"); // 新建一个 Key（名为：key_number），赋予数值：12345。	
 		root["lock"] = Json::Value("setunlock");
+		root["card"] = Json::Value(str_card);
 		Json::FastWriter  fast_writer;//查看json内容对象
 		string str = fast_writer.write(root); //json转string	
 		send(ClientS , str.c_str(), str.length() , 0);  // 发送信息
@@ -1319,6 +1321,7 @@ int   WX_Send_MotorLock( )
 		root["errno"] = Json::Value(0);     // 新建一个 Key（名为：key_string），赋予字符串值："value_string"。
 		root["error"] = Json::Value("sucess"); // 新建一个 Key（名为：key_number），赋予数值：12345。	
 		root["motorlock"] = Json::Value("setmotorlock");
+		root["card"] = Json::Value(str_card);
 		Json::FastWriter  fast_writer;//查看json内容对象
 		string str = fast_writer.write(root); //json转string	
 		send(ClientS, str.c_str(), str.length(), 0);  // 发送信息
@@ -1329,6 +1332,7 @@ int   WX_Send_MotorLock( )
 		root["errno"] = Json::Value(0);     // 新建一个 Key（名为：key_string），赋予字符串值："value_string"。
 		root["error"] = Json::Value("sucess"); // 新建一个 Key（名为：key_number），赋予数值：12345。	
 		root["motorlock"] = Json::Value("setmotorunlock");
+		root["card"] = Json::Value(str_card);
 		Json::FastWriter  fast_writer;//查看json内容对象
 		string str = fast_writer.write(root); //json转string	
 		send(ClientS, str.c_str(), str.length(), 0);  // 发送信息
@@ -1490,6 +1494,7 @@ int   WX_Send_DeviceOpenToHard()
 		root["errno"] = Json::Value(0);     // 新建一个 Key（名为：key_string），赋予字符串值："value_string"。
 		root["error"] = Json::Value("sucess"); // 新建一个 Key（名为：key_number），赋予数值：12345。	
 		root["deviceopen"] = Json::Value("setdeviceopen");
+		root["card"] = Json::Value(str_card);
 		Json::FastWriter  fast_writer;//查看json内容对象
 		string str = fast_writer.write(root); //json转string	
 		send(ClientS, str.c_str(), str.length(), 0);  // 发送信息
@@ -1500,6 +1505,7 @@ int   WX_Send_DeviceOpenToHard()
 		root["errno"] = Json::Value(0);     // 新建一个 Key（名为：key_string），赋予字符串值："value_string"。
 		root["error"] = Json::Value("sucess"); // 新建一个 Key（名为：key_number），赋予数值：12345。	
 		root["deviceopen"] = Json::Value("setdeviceclose");
+		root["card"] = Json::Value(str_card);
 		Json::FastWriter  fast_writer;//查看json内容对象
 		string str = fast_writer.write(root); //json转string	
 		send(ClientS, str.c_str(), str.length(), 0);  // 发送信息

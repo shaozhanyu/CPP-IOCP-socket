@@ -87,15 +87,15 @@ d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(948): warning C4244
 d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(905): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(1772): note: 参见“sprintf”的声明
 d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(925): warning C4101: “sys”: 未引用的局部变量
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1157): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1168): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1158): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1170): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
 d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1048): warning C4101: “sys”: 未引用的局部变量
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1324): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1334): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1216): warning C4101: “sys”: 未引用的局部变量
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1495): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1505): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1385): warning C4101: “sys”: 未引用的局部变量
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1327): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1338): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1218): warning C4101: “sys”: 未引用的局部变量
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1500): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1511): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1389): warning C4101: “sys”: 未引用的局部变量
   正在生成代码...
 LINK : warning LNK4075: 忽略“/INCREMENTAL”(由于“/PROFILE”规范)
 json_reader.obj : warning LNK4075: 忽略“/EDITANDCONTINUE”(由于“/OPT:REF”规范)
