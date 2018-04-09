@@ -102,6 +102,7 @@ typedef struct _HASH_TABLE
 
 ///////////////////////////////////////////////////////////////////////////
 extern  HANDLE  RecEvent[2];  //两事件
+extern  HANDLE  CheckHardConfigEvent[2];
 extern  char m_uuid[GUID_LEN];
 extern  SocketRecUnit   m_SocReUnit; //自定义数据缓存结构体，包括socket连接
 extern  SocketRecUnit   mAPP_RevUnit;
@@ -116,6 +117,7 @@ extern  CRITICAL_SECTION  mAPP_RECLock;
 extern  CRITICAL_SECTION  mSaveDataLock;//硬件上传的数据存储线程互斥锁
 extern  CRITICAL_SECTION  card_list_Lock;
 ///////////////////////////////////////////////////////////////////////////
+DWORD  WINAPI  CheckHardConfigThread(LPVOID lpParameter);//线程调用的指针函数
 char*  MakeUUID();
 int  ParseJsonFromString(char *mstr , Json::Value  *mJson); 
 unsigned  char    DataS_Compare(unsigned  char * p1  ,unsigned  char  *p2, unsigned  short  len);
@@ -158,10 +160,10 @@ int  APPUnSetWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue);
 int  APPConfigWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue);
 int  responseAPPrequest_weilan_data(SOCKET  ClientS , Json::Value  m_json);
 int   SaveAlarmData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len);
-int   WX_Send_CardAlarm(SOCKET ClientS , string  DevCard , string DevLock);
-int   WX_Send_MotorLock(SOCKET ClientS, string  DevCard, string DevLock);
-int   WX_Send_DeviceOpen(SOCKET ClientS, string  DevCard, string DevLock);
-
+//主动发送给硬件配置信息
+int   WX_SendBufang_ToHard();
+int   WX_Send_MotorLock();
+int   WX_Send_DeviceOpenToHard();
 #endif
 
 

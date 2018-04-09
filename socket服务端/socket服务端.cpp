@@ -43,6 +43,7 @@ using namespace std;
 #define BUFFER_SIZE       1000
 ///////////////////////////////////////////////////
 HANDLE  RecEvent[2];  //两事件 
+HANDLE  CheckHardConfigEvent[2];
 //////////////////////////////////////////////////////
 char buffer[BUFFER_SIZE]={
 "shaozhanyu-socketconncetOK!!"
@@ -583,9 +584,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	int  thread1=15;
 	int  thread2=20;
 	int  thread3=21;
+	int  thread4 = 23;
 	int *pst=&thread1;
 	int *pst2=&thread2;
 	int *pst3 = &thread3;
+	int *pst4 = &thread4;
 	sockecnt=0;//socket客户端连接数
 
 	//InitInsertBikeDatabaseCardinfo();//初始化配置card
@@ -657,6 +660,7 @@ SaveGPSData(1234 , (char*)(GpsData+23) , GpsData[14]*256+GpsData[15] );
 	APPsocket.Create("" ,APP_PORT ,true); //创建socket服务，针对APP连接
 	//RecEvent[0]=CreateEvent(NULL, FALSE, FALSE, NULL);  
 	//m_hEvent[1]=CreateEvent(NULL, FALSE, FALSE, NULL);
+	CheckHardConfigEvent[0] = CreateEvent(NULL, FALSE, FALSE, NULL);
 	IOCPsocket.Listen(10);
 	APPsocket.Listen(10);
 	// 创建用于发送数据的线程
@@ -670,7 +674,8 @@ SaveGPSData(1234 , (char*)(GpsData+23) , GpsData[14]*256+GpsData[15] );
 	InitializeCriticalSection(&mSaveDataLock);//初始化硬件上传的数据存储线程互斥锁
 	InitializeCriticalSection(&card_list_Lock);//card列表操作锁
 	
-	
+	HANDLE WX_AlarmThread = (HANDLE)_beginthreadex(NULL, 0, (unsigned int(__stdcall *)(void *))CheckHardConfigThread, pst4, 0, 0);
+
 	//////////////////////////////////////////////////////////////////////////
 	while(1)
 	{
