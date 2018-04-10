@@ -10,69 +10,13 @@
   MyThread.cpp
   MyThreadPool.cpp
   RecAPP.cpp
-d:\c++项目\appsocket服务端\socket服务端\recapp.cpp(2624): warning C4101: “sys”: 未引用的局部变量
   SaveQueue.cpp
   SocketAPP.cpp
-d:\c++项目\appsocket服务端\socket服务端\socketapp.cpp(134): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
-  c:\program files\windows kits\10\include\10.0.16299.0\um\winsock2.h(1830): note: 参见“inet_addr”的声明
-d:\c++项目\appsocket服务端\socket服务端\socketapp.cpp(535): warning C4996: 'inet_ntoa': Use inet_ntop() or InetNtop() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
-  c:\program files\windows kits\10\include\10.0.16299.0\um\winsock2.h(1848): note: 参见“inet_ntoa”的声明
   SocketTCP.cpp
-d:\c++项目\appsocket服务端\socket服务端\sockettcp.cpp(134): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
-  c:\program files\windows kits\10\include\10.0.16299.0\um\winsock2.h(1830): note: 参见“inet_addr”的声明
-d:\c++项目\appsocket服务端\socket服务端\sockettcp.cpp(583): warning C4996: 'inet_ntoa': Use inet_ntop() or InetNtop() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
-  c:\program files\windows kits\10\include\10.0.16299.0\um\winsock2.h(1848): note: 参见“inet_ntoa”的声明
   socket服务端.cpp
-d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(156): warning C4996: 'inet_ntoa': Use inet_ntop() or InetNtop() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
-  c:\program files\windows kits\10\include\10.0.16299.0\um\winsock2.h(1848): note: 参见“inet_ntoa”的声明
-d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(218): warning C4996: 'inet_ntoa': Use inet_ntop() or InetNtop() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
-  c:\program files\windows kits\10\include\10.0.16299.0\um\winsock2.h(1848): note: 参见“inet_ntoa”的声明
-d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(276): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files\windows kits\10\include\10.0.16299.0\ucrt\time.h(505): note: 参见“localtime”的声明
-d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(278): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(1772): note: 参见“sprintf”的声明
-d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(283): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(207): note: 参见“fopen”的声明
-d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(298): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files\windows kits\10\include\10.0.16299.0\ucrt\time.h(505): note: 参见“localtime”的声明
-d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(299): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(1772): note: 参见“sprintf”的声明
-d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(303): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(207): note: 参见“fopen”的声明
-d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(391): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(1772): note: 参见“sprintf”的声明
-d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(459): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(1772): note: 参见“sprintf”的声明
-d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(425): warning C4101: “pch”: 未引用的局部变量
-d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(562): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(1959): note: 参见“_snprintf”的声明
-d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(687): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(1272): note: 参见“scanf”的声明
-d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(691): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files\windows kits\10\include\10.0.16299.0\ucrt\time.h(505): note: 参见“localtime”的声明
-d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(692): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(1772): note: 参见“sprintf”的声明
-d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(696): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(207): note: 参见“fopen”的声明
-d:\c++项目\appsocket服务端\socket服务端\socket服务端.cpp(580): warning C4101: “a”: 未引用的局部变量
   Task.cpp
   TestTask.cpp
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(653): warning C4244: “=”: 从“my_ulonglong”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(595): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(1772): note: 参见“sprintf”的声明
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(630): warning C4101: “sys”: 未引用的局部变量
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(808): warning C4244: “=”: 从“my_ulonglong”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(750): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(1772): note: 参见“sprintf”的声明
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(785): warning C4101: “sys”: 未引用的局部变量
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(948): warning C4244: “=”: 从“my_ulonglong”转换到“int”，可能丢失数据
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(905): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(1772): note: 参见“sprintf”的声明
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(925): warning C4101: “sys”: 未引用的局部变量
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1048): warning C4101: “sys”: 未引用的局部变量
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1218): warning C4101: “sys”: 未引用的局部变量
-d:\c++项目\appsocket服务端\socket服务端\testtask.cpp(1389): warning C4101: “sys”: 未引用的局部变量
   正在生成代码
-  All 1473 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 1705 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   已完成代码的生成
-  socket服务端.vcxproj -> D:\C++项目\APPsocket服务端\Release\socket服务端.exe
+  socket服务端.vcxproj -> C:\Users\Administrator\Desktop\APPsocket服务端\Release\socket服务端.exe

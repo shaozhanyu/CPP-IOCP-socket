@@ -31,54 +31,56 @@ CTestTask::~CTestTask(void)
 DWORD  WINAPI  CheckHardConfigThread(LPVOID lpParameter)
 {
 	int ret1, ret2, ret3;
-	int CheckCnt = 10;
+	int CheckCnt = 3;
 	int CheckRet1 = 10, CheckRet2 = 10, CheckRet3 = 10;
+	int nIndex = 0;
 	while (true)
 	{
-		//每次等2000毫秒   
-		int nIndex = WaitForMultipleObjects(1, CheckHardConfigEvent, FALSE, 5000);
+		//每次等5000毫秒   
+		nIndex = WaitForMultipleObjects(1, CheckHardConfigEvent, FALSE, 2000);
 
-		if (nIndex == WAIT_OBJECT_0 + 1)
+		if (nIndex == WAIT_OBJECT_0) //第一个事件发生    
 		{
-
-		}
-		else if (nIndex == WAIT_OBJECT_0) //第一个事件发生    
-		{
+			printf("线程启动，查询下发指令表！\r\n");
+			CheckCnt = 1;
+			CheckRet1 = 3;
+			CheckRet2 = 3;
+			CheckRet3 = 3;
 			while (CheckCnt--)
 			{
-				if (CheckRet1-- > 0)
+				if (CheckRet1 > 0)
 				{
 					ret1 = WX_SendBufang_ToHard();
 					switch (ret1)
 					{
 					case 0://执行完毕
-						CheckCnt = 10;
+						CheckCnt = 3;
 						break;
 					case -1://设置表中空，没有需要下发的设置
 						CheckRet1 = 0;
 						break;
 					}
 				}
-				if (CheckRet2-- > 0)
+				if (CheckRet2 > 0)
 				{
 					ret2 = WX_Send_MotorLock();
 					switch (ret2)
 					{
 					case 0://执行完毕
-						CheckCnt = 10;
+						CheckCnt = 3;
 						break;
 					case -1://设置表中空，没有需要下发的设置
 						CheckRet2 = 0;
 						break;
 					}
 				}
-				if (CheckRet3-- > 0)
+				if (CheckRet3 > 0)
 				{
 					ret3 = WX_Send_DeviceOpenToHard();
 					switch (ret3)
 					{
 					case 0://执行完毕
-						CheckCnt = 10;
+						CheckCnt = 3;
 						break;
 					case -1://设置表中空，没有需要下发的设置
 						CheckRet3 = 0;
@@ -92,6 +94,7 @@ DWORD  WINAPI  CheckHardConfigThread(LPVOID lpParameter)
 		}
 		else if (nIndex == WAIT_TIMEOUT) //超时    
 		{   //超时可作定时用    
+			Sleep(50);
 			SetEvent(CheckHardConfigEvent[0]);//触发事件唤醒线程
 		}
 	}
@@ -470,7 +473,16 @@ int  SaveHardStateInfo(SOCKET   ClientS , Json::Value  mJsonValue)
 	//SYSTEMTIME sys; 
 	//GetLocalTime( &sys ); 
 	//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
-
+	//初始化数据库  
+	if (0 == mysql_library_init(0, NULL, NULL))
+	{
+		cout << "mysql_library_init() succeed" << endl;
+	}
+	else
+	{
+		cout << "mysql_library_init() failed" << endl;
+		return -1;
+	}
     mysql_init(&myCont);//初始化mysql
 
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
@@ -481,6 +493,7 @@ int  SaveHardStateInfo(SOCKET   ClientS , Json::Value  mJsonValue)
     {
         cout << "connect failed!\n" << endl;
 		mysql_close(&myCont);
+		mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 		return -2;
     }
 ///////////////////////////////////////////////////////////////////////////////////
@@ -513,6 +526,7 @@ int  SaveHardStateInfo(SOCKET   ClientS , Json::Value  mJsonValue)
 	else
 	{
 		mysql_close(&myCont);
+		mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 		cout << "select username error!\n" << endl;
 		return -4;
 	}
@@ -532,6 +546,7 @@ int  SaveHardStateInfo(SOCKET   ClientS , Json::Value  mJsonValue)
 
 	res = mysql_query(&myCont, (const  char *)mSQLStr.c_str()); //执行SQL语句,添加一条记录
 	mysql_close(&myCont);//及时关闭mysql连接，否则占用连接数
+	mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 	if(!res  )
 	{	
 		Json::Value root;             // 表示整个 json 对象
@@ -564,7 +579,7 @@ int  SaveHardStateInfo(SOCKET   ClientS , Json::Value  mJsonValue)
 		
 	}
     mysql_close(&myCont);
-	
+	mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 	return -1;
 
 }
@@ -574,7 +589,7 @@ int  SaveHardStateInfo(SOCKET   ClientS , Json::Value  mJsonValue)
 int   SaveGPSData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len)
 {
 	//time_t now_time; 
-	int ret1 ,ret2,ret3 ;
+	int ret1=1 ,ret2=1,ret3 =1 ;
 	int i=0;
 	bool  getsucess =false;
 	const char user[] = "root";         
@@ -630,7 +645,16 @@ int   SaveGPSData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len)
 	SYSTEMTIME sys; 
 	//GetLocalTime( &sys ); 
 	//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
-
+	//初始化数据库  
+	if (0 == mysql_library_init(0, NULL, NULL))
+	{
+		cout << "mysql_library_init() succeed" << endl;
+	}
+	else
+	{
+		cout << "mysql_library_init() failed" << endl;
+		return -1;
+	}
     mysql_init(&myCont);//初始化mysql
 
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
@@ -641,6 +665,7 @@ int   SaveGPSData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len)
     {
         cout << "connect failed!\n" << endl;
 		mysql_close(&myCont);
+		mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 		return -2;
     }
 ///////////////////////////////////////////////////////////////////////////////////
@@ -671,6 +696,7 @@ int   SaveGPSData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len)
 	else
 	{
 		mysql_close(&myCont);
+		mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 		cout << "GPS---查询card失败!\n" << endl;
 		return -4;
 	}
@@ -686,15 +712,15 @@ int   SaveGPSData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len)
 	res = mysql_query(&myCont, (const  char *)mSQLStr.c_str()); //执行SQL语句,添加一条记录
 	
 	mysql_close(&myCont);//及时关闭mysql连接，否则占用连接数
-
+	mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 	if(!res  )
 	{		
-		cout << "SaveGPS-----sucess!\n" << endl;
-	    ret1 = WX_SendBufang_ToHard();
-		ret2 = WX_Send_MotorLock();
-		ret3 = WX_Send_DeviceOpenToHard();
-		if(!ret1 || !ret2 || !ret3)
-			return 0; 
+		//cout << "SaveGPS-----sucess!\n" << endl;
+	    //ret1 = WX_SendBufang_ToHard();
+		//ret2 = WX_Send_MotorLock();
+		//ret3 = WX_Send_DeviceOpenToHard();
+		//if(!ret1 || !ret2 || !ret3)
+		//	return 0; 
 		Json::Value root;             // 表示整个 json 对象
 		root["errno"] = Json::Value(0);     // 新建一个 Key（名为：key_string），赋予字符串值："value_string"。
 		root["error"] = Json::Value("sucess"); // 新建一个 Key（名为：key_number），赋予数值：12345。	
@@ -720,7 +746,7 @@ int   SaveGPSData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len)
 		
 	}
     mysql_close(&myCont);
-	
+	mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 	return -1;
 
 }
@@ -785,7 +811,16 @@ int   SaveBaseStationData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  in
 	SYSTEMTIME sys; 
 	//GetLocalTime( &sys ); 
 	//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
-
+	//初始化数据库  
+	if (0 == mysql_library_init(0, NULL, NULL))
+	{
+		cout << "mysql_library_init() succeed" << endl;
+	}
+	else
+	{
+		cout << "mysql_library_init() failed" << endl;
+		return -1;
+	}
     mysql_init(&myCont);//初始化mysql
 
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
@@ -796,6 +831,7 @@ int   SaveBaseStationData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  in
     {
         cout << "connect failed!\n" << endl;
 		mysql_close(&myCont);
+		mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 		return -2;
     }
 ///////////////////////////////////////////////////////////////////////////////////
@@ -826,6 +862,7 @@ int   SaveBaseStationData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  in
 	else
 	{
 		mysql_close(&myCont);
+		mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 		cout << "基站定位---查询card失败!\n" << endl;
 		return -4;
 	}
@@ -841,14 +878,15 @@ int   SaveBaseStationData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  in
 	res = mysql_query(&myCont, (const  char *)mSQLStr.c_str()); //执行SQL语句,添加一条记录
 	
 	mysql_close(&myCont);//及时关闭mysql连接，否则占用连接数
+	mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 	if(!res  )
 	{		
 		cout << "SaveBaseStation-----sucess!\n" << endl;
-		ret1 = WX_SendBufang_ToHard();
-		ret2 = WX_Send_MotorLock();
-		ret3 = WX_Send_DeviceOpenToHard();
-		if (!ret1 || !ret2 || !ret3)
-			return 0;
+		//ret1 = WX_SendBufang_ToHard();
+		//ret2 = WX_Send_MotorLock();
+		//ret3 = WX_Send_DeviceOpenToHard();
+		//if (!ret1 || !ret2 || !ret3)
+		//	return 0;
 		Json::Value root;             // 表示整个 json 对象
 		root["errno"] = Json::Value(0);     // 新建一个 Key（名为：key_string），赋予字符串值："value_string"。
 		root["error"] = Json::Value("sucess"); // 新建一个 Key（名为：key_number），赋予数值：12345。	
@@ -876,7 +914,7 @@ int   SaveBaseStationData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  in
 		
 	}
     mysql_close(&myCont);
-	
+	mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 	return -1;
 
 }
@@ -925,7 +963,16 @@ int   SaveAlarmData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len
 	SYSTEMTIME sys; 
 	//GetLocalTime( &sys ); 
 	//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
-
+	//初始化数据库  
+	if (0 == mysql_library_init(0, NULL, NULL))
+	{
+		cout << "mysql_library_init() succeed" << endl;
+	}
+	else
+	{
+		cout << "mysql_library_init() failed" << endl;
+		return -1;
+	}
     mysql_init(&myCont);//初始化mysql
 
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
@@ -936,6 +983,7 @@ int   SaveAlarmData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len
     {
         cout << "connect failed!\n" << endl;
 		mysql_close(&myCont);
+		mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 		return -2;
     }
 ///////////////////////////////////////////////////////////////////////////////////
@@ -966,6 +1014,7 @@ int   SaveAlarmData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len
 	else
 	{
 		mysql_close(&myCont);
+		mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 		cout << "报警信息保存---查询card失败!\n" << endl;
 		return -4;
 	}
@@ -979,14 +1028,15 @@ int   SaveAlarmData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len
 	res = mysql_query(&myCont, (const  char *)mSQLStr.c_str()); //执行SQL语句,添加一条记录
 	
 	mysql_close(&myCont);//及时关闭mysql连接，否则占用连接数
+	mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 	if(!res  )
 	{		
 		cout << "SaveCardAlarm-----sucess!\n" << endl;
-		ret1 = WX_SendBufang_ToHard();
-		ret2 = WX_Send_MotorLock();
-		ret3 = WX_Send_DeviceOpenToHard();
-		if (!ret1 || !ret2 || !ret3)
-			return 0; 
+		//ret1 = WX_SendBufang_ToHard();
+		//ret2 = WX_Send_MotorLock();
+		//ret3 = WX_Send_DeviceOpenToHard();
+		//if (!ret1 || !ret2 || !ret3)
+		//	return 0; 
 		Json::Value root;             // 表示整个 json 对象
 		root["errno"] = Json::Value(0);     // 新建一个 Key（名为：key_string），赋予字符串值："value_string"。
 		root["error"] = Json::Value("sucess"); // 新建一个 Key（名为：key_number），赋予数值：12345。	
@@ -1013,7 +1063,7 @@ int   SaveAlarmData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len
 		
 	}
     mysql_close(&myCont);
-	
+	mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 	return -1;
 
 }
@@ -1027,7 +1077,7 @@ int   WX_SendBufang_ToHard( )
     const char host[] = "localhost";  
 	unsigned int port = 3306;   
     char table[] = "bike";    
-	
+	//return -1;
 	struct tm ;  
 
 	string   tos ,str_token,str_card ,str_gps, str_username;  
@@ -1048,19 +1098,33 @@ int   WX_SendBufang_ToHard( )
 	SYSTEMTIME sys; 
 	//GetLocalTime( &sys ); 
 	//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
-
+	//初始化数据库  
+	if (0 == mysql_library_init(0, NULL, NULL)) 
+	{
+		cout << "mysql_library_init() succeed" << endl;
+	}
+	else 
+	{
+		cout << "mysql_library_init() failed" << endl;
+		return -1;
+	}
     mysql_init(&myCont);
 
+	//return -1;
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {  
+
     }
     else
     {
         cout << "connect failed!\n" << endl;
 		mysql_close(&myCont);
+		mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 		return -2;
     }
 	
+	//cout << "测试内存增长 !\n" << endl;
+	//return -1;
 	//cout<<m_strToken.c_str()<<endl;
 	m_strToken = "SELECT  *  FROM  set_card_alarm   ORDER BY card_id ASC LIMIT 1 ";
 
@@ -1068,6 +1132,7 @@ int   WX_SendBufang_ToHard( )
 	res = mysql_query(&myCont, (const  char *)m_strToken.c_str()); //执行SQL语句,通过token查找username
 	if(!res  )
 	{			
+		
 		//保存查询到的数据到result
         result = mysql_store_result(&myCont);
         num_row=mysql_num_rows(result); //读取行数
@@ -1088,7 +1153,7 @@ int   WX_SendBufang_ToHard( )
 						{
 							allow_alarm = getNullStr(mysql_row[f2]); //获取字段内容，里面判断非NULL			
 							getsucess =true;
-							cout<<allow_alarm<<endl;
+							//cout<<allow_alarm<<endl;
 						}
 						else if (!strcmp( fields[f2].name , "card")) //判断当前列的字段名称
 						{
@@ -1106,7 +1171,7 @@ int   WX_SendBufang_ToHard( )
 		mysql_free_result(result); //释放缓存，特别注意，不释放会导致内存增长
 
 	}
-	
+
 	if(getsucess ==true)
 	{
 
@@ -1114,7 +1179,8 @@ int   WX_SendBufang_ToHard( )
 	else
 	{
 		mysql_close(&myCont);
-		cout << "no alarm_set list !\n" << endl;
+		mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
+		//cout << "no alarm_set list !\n" << endl;
 		return -1;
 	}
 	
@@ -1135,16 +1201,18 @@ int   WX_SendBufang_ToHard( )
 			if (fields[0].name != NULL)
 			{		
 				ClientS = atoi(mysql_row[0]); //获取字段内容，里面判断非NULL	
-				cout << "硬件socket端口号是：" << ClientS << endl;
+				//cout << "硬件socket端口号是：" << ClientS << endl;
 			}
-			 //getsucess = true;		
-			mysql_free_result(result); //释放缓存，特别注意，不释放会导致内存增长
+
 		}
 		else
 		{
+			mysql_close(&myCont);
+			mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 			cout << "发送锁车指令失败！设备没有上传记录，得不到socket！" << endl;
 			return -22;
 		}
+		mysql_free_result(result); //释放缓存，特别注意，不释放会导致内存增长
 	}
 	if( 0 == allow_alarm.compare("1"))
 	{
@@ -1156,7 +1224,7 @@ int   WX_SendBufang_ToHard( )
 		Json::FastWriter  fast_writer;//查看json内容对象
 		string str = fast_writer.write(root); //json转string	
 		send(ClientS , str.c_str(), str.length() , 0);  // 发送信息
-		cout << "发送设防指令！" << endl;
+		//cout << "发送设防指令！" << endl;
 	}		
 	else 
 	{
@@ -1168,21 +1236,24 @@ int   WX_SendBufang_ToHard( )
 		Json::FastWriter  fast_writer;//查看json内容对象
 		string str = fast_writer.write(root); //json转string	
 		send(ClientS , str.c_str(), str.length() , 0);  // 发送信息
-		cout << "发送撤防指令！" << endl;
+		//cout << "发送撤防指令！" << endl;
 	}
 
 	m_strToken = "DELETE    FROM  set_card_alarm   WHERE card = '" + str_card + "' ORDER BY time ASC LIMIT 1 ";
 	res = mysql_query(&myCont, (const  char *)m_strToken.c_str()); //执行SQL语句,通过token查找username
+	//cout << m_strToken.c_str() << endl;
 	mysql_close(&myCont);
+	mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 	if (!res)
 	{
-		cout << "删除已发送的设防指令！" << endl;
+		//cout << "删除已发送的设防指令！" << endl;
 		return 0;
 	}
 	else
 		return -2;
-	mysql_close(&myCont);
 
+	mysql_close(&myCont);
+	mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 	return -123;
 
 }
@@ -1197,9 +1268,9 @@ int   WX_Send_MotorLock( )
 	const char host[] = "localhost";
 	unsigned int port = 3306;
 	char table[] = "bike";
-
+	
 	struct tm;
-
+	//return -1;
 	string   tos, str_token, str_card, str_gps, str_username;
 	string   str_lock;
 	//string   radius;
@@ -1207,8 +1278,7 @@ int   WX_Send_MotorLock( )
 	//string   weilan_radius;
 	string   allow_alarm;
 	string  m_strToken;
-	//= "SELECT  card_socket  FROM  card_data  WHERE card = '" + DevCard + "'ORDER BY card_id DESC LIMIT 0,1 ";
-
+	
 	MYSQL myCont;
 	MYSQL_RES *result;
 	MYSQL_ROW  mysql_row; //行内容
@@ -1218,7 +1288,16 @@ int   WX_Send_MotorLock( )
 	SYSTEMTIME sys;
 	//GetLocalTime( &sys ); 
 	//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
-
+	//初始化数据库  
+	if (0 == mysql_library_init(0, NULL, NULL))
+	{
+		cout << "mysql_library_init() succeed" << endl;
+	}
+	else
+	{
+		cout << "mysql_library_init() failed" << endl;
+		return -1;
+	}
 	mysql_init(&myCont);
 
 	if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
@@ -1226,8 +1305,9 @@ int   WX_Send_MotorLock( )
 	}
 	else
 	{
-		cout << "connect failed!\n" << endl;
+		//cout << "connect failed!\n" << endl;
 		mysql_close(&myCont);
+		mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 		return -2;
 	}
 	
@@ -1259,7 +1339,7 @@ int   WX_Send_MotorLock( )
 						{
 							allow_alarm = getNullStr(mysql_row[f2]); //获取字段内容，里面判断非NULL			
 							getsucess = true;
-							cout << allow_alarm << endl;
+							//cout <<"motor_lock: "<< allow_alarm << endl;
 						}
 						else if (!strcmp( fields[f2].name , "card")) //判断当前列的字段名称
 						{
@@ -1284,7 +1364,8 @@ int   WX_Send_MotorLock( )
 	else
 	{
 		mysql_close(&myCont);
-		cout << "no alarm_set list !\n" << endl;
+		mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
+		//cout << "no alarm_set list !\n" << endl;
 		return -1;
 	}
 	m_strToken = "SELECT  card_socket  FROM  card_data  WHERE card = '" + str_card + "'ORDER BY card_id DESC LIMIT 0,1 ";
@@ -1304,16 +1385,19 @@ int   WX_Send_MotorLock( )
 			if (fields[0].name != NULL)
 			{
 				ClientS = atoi(mysql_row[0]); //获取字段内容，里面判断非NULL	
-				cout << "硬件socket端口号是：" << ClientS << endl;
+				//cout << "硬件socket端口号是：" << ClientS << endl;
 			}
 			//getsucess = true;		
-			mysql_free_result(result); //释放缓存，特别注意，不释放会导致内存增长
+			
 		}
 		else
 		{
-			cout << "发送锁车指令失败！设备没有上传记录，得不到socket！" << endl;
+			mysql_close(&myCont);
+			mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
+			cout << "发送电机控制指令失败！设备没有上传记录，得不到socket！" << endl;
 			return -22;
 		}
+		mysql_free_result(result); //释放缓存，特别注意，不释放会导致内存增长
 	}
 	if (0 == allow_alarm.compare("1"))
 	{
@@ -1325,6 +1409,7 @@ int   WX_Send_MotorLock( )
 		Json::FastWriter  fast_writer;//查看json内容对象
 		string str = fast_writer.write(root); //json转string	
 		send(ClientS, str.c_str(), str.length(), 0);  // 发送信息
+		//cout << "发送锁电机指令！" << endl;
 	}
 	else
 	{
@@ -1336,12 +1421,14 @@ int   WX_Send_MotorLock( )
 		Json::FastWriter  fast_writer;//查看json内容对象
 		string str = fast_writer.write(root); //json转string	
 		send(ClientS, str.c_str(), str.length(), 0);  // 发送信息
+		//cout << "发送解锁电机指令！" << endl;
 	}
 
 	{
 		m_strToken = "DELETE    FROM  set_motor_lock   WHERE card = '" + str_card + "' ORDER BY time ASC LIMIT 1 ";
 		res = mysql_query(&myCont, (const  char *)m_strToken.c_str()); //执行SQL语句,通过token查找username
 		mysql_close(&myCont);
+		mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 		if (!res)
 		{
 			return 0;
@@ -1352,7 +1439,7 @@ int   WX_Send_MotorLock( )
 	}
 
 	mysql_close(&myCont);
-
+	mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 	return -123;
 
 }
@@ -1367,19 +1454,14 @@ int   WX_Send_DeviceOpenToHard()
 	const char host[] = "localhost";
 	unsigned int port = 3306;
 	char table[] = "bike";
-
+	
 	struct tm;
-
+	//return -1;
 	string   tos, str_token, str_card, str_gps, str_username;
 	string   str_lock;
-	//string   radius;
-	//string   weilan_gps;
-	//string   weilan_radius;
 	string   allow_alarm;
 	string  m_strToken ;
-	//= "SELECT  card_socket  FROM  card_data  WHERE card = '" + DevCard + "'ORDER BY card_id DESC LIMIT 0,1 ";
-
-    
+	
 	MYSQL myCont;
 	MYSQL_RES *result;
 	MYSQL_ROW  mysql_row; //行内容
@@ -1389,7 +1471,16 @@ int   WX_Send_DeviceOpenToHard()
 	SYSTEMTIME sys;
 	//GetLocalTime( &sys ); 
 	//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
-
+	//初始化数据库  
+	if (0 == mysql_library_init(0, NULL, NULL))
+	{
+		cout << "mysql_library_init() succeed" << endl;
+	}
+	else
+	{
+		cout << "mysql_library_init() failed" << endl;
+		return -1;
+	}
 	mysql_init(&myCont);
 
 	if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
@@ -1399,6 +1490,7 @@ int   WX_Send_DeviceOpenToHard()
 	{
 		cout << "connect failed!\n" << endl;
 		mysql_close(&myCont);
+		mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 		return -2;
 	}
 	//cout<<m_strToken.c_str()<<endl;
@@ -1430,7 +1522,7 @@ int   WX_Send_DeviceOpenToHard()
 						{
 							allow_alarm = getNullStr(mysql_row[f2]); //获取字段内容，里面判断非NULL			
 							getsucess = true;
-							cout << allow_alarm << endl;
+							//cout << allow_alarm << endl;
 						}
 						else if (!strcmp( fields[f2].name , "card")) //判断当前列的字段名称
 						{
@@ -1455,7 +1547,8 @@ int   WX_Send_DeviceOpenToHard()
 	else
 	{
 		mysql_close(&myCont);
-		cout << "no alarm_set list !\n" << endl;
+		mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
+		//cout << "no alarm_set list !\n" << endl;
 		return -1;
 	}
 
@@ -1475,16 +1568,19 @@ int   WX_Send_DeviceOpenToHard()
 			if (fields[0].name != NULL)
 			{
 				ClientS = atoi(mysql_row[0]); //获取字段内容，里面判断非NULL	
-				cout << "硬件socket端口号是：" << ClientS << endl;
+				//cout << "硬件socket端口号是：" << ClientS << endl;
 			}
 			//getsucess = true;		
-			mysql_free_result(result); //释放缓存，特别注意，不释放会导致内存增长
+			
 		}
 		else
 		{
-			cout << "发送锁车指令失败！设备没有上传记录，得不到socket！" << endl;
+			mysql_close(&myCont);
+			mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
+			cout << "发送电源控制指令失败！设备没有上传记录，得不到socket！" << endl;
 			return -22;
 		}
+		mysql_free_result(result); //释放缓存，特别注意，不释放会导致内存增长
 	}
     
 
@@ -1498,6 +1594,7 @@ int   WX_Send_DeviceOpenToHard()
 		Json::FastWriter  fast_writer;//查看json内容对象
 		string str = fast_writer.write(root); //json转string	
 		send(ClientS, str.c_str(), str.length(), 0);  // 发送信息
+		//cout << "发送开启电源指令！" << endl;
 	}
 	else
 	{
@@ -1509,12 +1606,14 @@ int   WX_Send_DeviceOpenToHard()
 		Json::FastWriter  fast_writer;//查看json内容对象
 		string str = fast_writer.write(root); //json转string	
 		send(ClientS, str.c_str(), str.length(), 0);  // 发送信息
+		//cout << "发送关闭电源指令！" << endl;
 	}
 
 	{
 		m_strToken = "DELETE    FROM  set_device_open   WHERE card = '" + str_card + "' ORDER BY time ASC LIMIT 1 ";
 		res = mysql_query(&myCont, (const  char *)m_strToken.c_str()); //执行SQL语句,通过token查找username
 		mysql_close(&myCont);
+		mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 		if (!res)
 		{
 			return 0;
@@ -1524,7 +1623,7 @@ int   WX_Send_DeviceOpenToHard()
 			return -2;
 	}
 	mysql_close(&myCont);
-
+	mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 	return -123;
 
 }
