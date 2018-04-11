@@ -95,7 +95,7 @@ DWORD  WINAPI  CheckHardConfigThread(LPVOID lpParameter)
 		else if (nIndex == WAIT_TIMEOUT) //超时    
 		{   //超时可作定时用    
 			Sleep(50);
-			//SetEvent(CheckHardConfigEvent[0]);//触发事件唤醒线程
+			SetEvent(CheckHardConfigEvent[0]);//触发事件唤醒线程
 		}
 	}
 	printf("线程结束\n");
