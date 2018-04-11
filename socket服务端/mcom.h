@@ -18,8 +18,8 @@ using namespace std;
 
 #define  WIN_64_DEF       1
 
-#define MYPORT    9888
-#define APP_PORT  8999
+#define  MYPORT    9888
+#define  APP_PORT  8999
 #define  MAX_APP_TCP_NUM            10000
 #define  MAX_HARD_TCP_NUM           10000
 ////////////////////////////////////////////////////////////////////////////

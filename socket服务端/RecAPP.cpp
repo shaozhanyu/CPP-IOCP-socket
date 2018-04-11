@@ -81,7 +81,6 @@ char   RecAPPData( SOCKET ClientS, unsigned char * src, unsigned  int  len )
 			if( (DataLen-(pdata-srcdat)) >= APP_MIN_DATA_LEN )
 			{
 				
-
 				pstr = FindByteBuff(pdata , (DataLen-(pdata-srcdat)) , decdata , 4);//查找命令头
 				if(pstr!=0)//查找到包头
 				{		

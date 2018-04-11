@@ -98,7 +98,7 @@ int  CSocketAPP::Create(char* cIP,int iPort,bool bRebind)
 	}
 	else
 	{
-		printf("创建socket套接字\r\n");
+		printf("APP服务端创建socket套接字\r\n");
 	}
 	// 创建IOCP的内核对象
 	/****
@@ -144,7 +144,7 @@ int  CSocketAPP::Create(char* cIP,int iPort,bool bRebind)
 	}
 	else
 	{
-		printf("绑定套接字成功！\r\n");
+		printf("APP服务端绑定套接字成功！\r\n");
 	}
 
 	//某些具体程序要求待未发送完的数据发送出去后再关闭socket，可通过设置让程序满足要求：
@@ -189,7 +189,7 @@ int  CSocketAPP::Listen(int lNum )
 	}
 	else
 	{
-		printf("启动监听成功!\r\n");
+		printf("APP服务端启动监听成功!\r\n");
 	}
 
 // 创建IOCP线程--线程里面创建线程池
@@ -219,7 +219,7 @@ int  CSocketAPP::Listen(int lNum )
 
 	}
 	// 开始处理IO数据
-	printf( "socket服务器已就绪，正在等待客户端接入....\r\n");
+	printf( "APP软件socket服务器已就绪，正在等待客户端接入....\r\n");
 	
 	return 0;
 

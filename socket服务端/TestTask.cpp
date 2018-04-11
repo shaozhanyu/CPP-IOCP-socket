@@ -95,7 +95,7 @@ DWORD  WINAPI  CheckHardConfigThread(LPVOID lpParameter)
 		else if (nIndex == WAIT_TIMEOUT) //超时    
 		{   //超时可作定时用    
 			Sleep(50);
-			SetEvent(CheckHardConfigEvent[0]);//触发事件唤醒线程
+			//SetEvent(CheckHardConfigEvent[0]);//触发事件唤醒线程
 		}
 	}
 	printf("线程结束\n");
@@ -117,7 +117,8 @@ void CTestTask::taskAPPRecProc()
 ///////////////////硬件解析后数据的存储///////////////////////////////
 void CTestTask::taskSaveSQL()
 {
-	HardData  mdata , *pmdata;
+	//HardData  mdata;
+	HardData  *pmdata;
 
 	EnterCriticalSection(&mSaveDataLock);//待存储数据加锁
 
@@ -131,11 +132,12 @@ void CTestTask::taskSaveSQL()
 			
 		}else
 		{
-			memcpy(mdata.RecData , pd->RecData ,  pd->DataLen);
-			mdata.DataLen =  pd->DataLen;	
-			mdata.cmd =  pd->cmd;
-			mdata.SocketNum =  pd->SocketNum;
-			pmdata = &mdata;
+			//memcpy(mdata.RecData , pd->RecData ,  pd->DataLen);
+			//mdata.DataLen =  pd->DataLen;	
+			//mdata.cmd =  pd->cmd;
+			//mdata.SocketNum =  pd->SocketNum;
+			//pmdata = &mdata;
+			pmdata = pd;
 
 			LeaveCriticalSection(&mSaveDataLock);//解锁
 
@@ -147,7 +149,6 @@ void CTestTask::taskSaveSQL()
 	{
 		LeaveCriticalSection(&mSaveDataLock);//解锁
 	}
-	
 
 }
 
@@ -476,7 +477,7 @@ int  SaveHardStateInfo(SOCKET   ClientS , Json::Value  mJsonValue)
 	//初始化数据库  
 	if (0 == mysql_library_init(0, NULL, NULL))
 	{
-		cout << "mysql_library_init() succeed" << endl;
+		////cout << "mysql_library_init() succeed" << endl;
 	}
 	else
 	{
@@ -648,15 +649,19 @@ int   SaveGPSData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len)
 	//初始化数据库  
 	if (0 == mysql_library_init(0, NULL, NULL))
 	{
-		cout << "mysql_library_init() succeed" << endl;
+		//cout << "mysql_library_init() succeed" << endl;
 	}
 	else
 	{
 		cout << "mysql_library_init() failed" << endl;
 		return -1;
 	}
-    mysql_init(&myCont);//初始化mysql
-
+  
+	if (mysql_init(&myCont) == NULL)//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
 		//mysql_query(&myCont, "SET NAMES utf8"); //设置编码格式       
@@ -814,7 +819,7 @@ int   SaveBaseStationData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  in
 	//初始化数据库  
 	if (0 == mysql_library_init(0, NULL, NULL))
 	{
-		cout << "mysql_library_init() succeed" << endl;
+		////cout << "mysql_library_init() succeed" << endl;
 	}
 	else
 	{
@@ -966,7 +971,7 @@ int   SaveAlarmData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len
 	//初始化数据库  
 	if (0 == mysql_library_init(0, NULL, NULL))
 	{
-		cout << "mysql_library_init() succeed" << endl;
+		//cout << "mysql_library_init() succeed" << endl;
 	}
 	else
 	{
@@ -1101,7 +1106,7 @@ int   WX_SendBufang_ToHard( )
 	//初始化数据库  
 	if (0 == mysql_library_init(0, NULL, NULL)) 
 	{
-		cout << "mysql_library_init() succeed" << endl;
+		//cout << "mysql_library_init() succeed" << endl;
 	}
 	else 
 	{
@@ -1126,7 +1131,7 @@ int   WX_SendBufang_ToHard( )
 	//cout << "测试内存增长 !\n" << endl;
 	//return -1;
 	//cout<<m_strToken.c_str()<<endl;
-	m_strToken = "SELECT  *  FROM  set_card_alarm   ORDER BY card_id ASC LIMIT 1 ";
+	m_strToken = "SELECT  *  FROM  set_card_alarm   ORDER BY time ASC LIMIT 1 ";
 
 	getsucess =false;
 	res = mysql_query(&myCont, (const  char *)m_strToken.c_str()); //执行SQL语句,通过token查找username
@@ -1291,7 +1296,7 @@ int   WX_Send_MotorLock( )
 	//初始化数据库  
 	if (0 == mysql_library_init(0, NULL, NULL))
 	{
-		cout << "mysql_library_init() succeed" << endl;
+		//cout << "mysql_library_init() succeed" << endl;
 	}
 	else
 	{
@@ -1312,7 +1317,7 @@ int   WX_Send_MotorLock( )
 	}
 	
 	
-	m_strToken = "SELECT  *  FROM  set_motor_lock  ORDER BY  card_id ASC LIMIT 1 ";
+	m_strToken = "SELECT  *  FROM  set_motor_lock  ORDER BY  time  ASC LIMIT 1 ";
 
 	//cout<<m_strToken.c_str()<<endl;
 	getsucess = false;
@@ -1474,7 +1479,7 @@ int   WX_Send_DeviceOpenToHard()
 	//初始化数据库  
 	if (0 == mysql_library_init(0, NULL, NULL))
 	{
-		cout << "mysql_library_init() succeed" << endl;
+		//cout << "mysql_library_init() succeed" << endl;
 	}
 	else
 	{
@@ -1496,7 +1501,7 @@ int   WX_Send_DeviceOpenToHard()
 	//cout<<m_strToken.c_str()<<endl;
 	getsucess = false;
 	
-	m_strToken = "SELECT  *  FROM  set_device_open  ORDER BY card_id ASC LIMIT 1 ";
+	m_strToken = "SELECT  *  FROM  set_device_open  ORDER BY time ASC LIMIT 1 ";
 
 	getsucess = false;
 	res = mysql_query(&myCont, (const  char *)m_strToken.c_str()); //执行SQL语句,通过token查找username

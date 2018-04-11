@@ -129,31 +129,33 @@ void *Socket_Read_Thread(void *ptr)
     return 0;
 	
 }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////硬件socket服务端监听等待链接accept///////////////////////////////////////////////////////////////
 int   socket_accept_thread(void *ptr)
 {
+	SOCKADDR_IN     connetAdrr;
+	int len = sizeof(sockaddr);
 	
-	//time_t   rawtime;
-//	struct tm *curTime;
-	char filename[256]={0};
-	sockaddr_in    connetAdrr;
-	int len = sizeof(connetAdrr);
-	
+	SOCKET  max_value = 0xfffffffffffffffe;
 
 	while(true){ //死循环等待连接accept
 
-		if((IOCPsocket.m_newClinetSockfd = accept( IOCPsocket.m_sockfd,(struct sockaddr*)&connetAdrr,&len))<0)//等待socket客户端连接
+		printf("服务器listen监听的硬件socket号: %d" , IOCPsocket.m_sockfd);
+		IOCPsocket.m_newClinetSockfd = accept(IOCPsocket.m_sockfd, (struct sockaddr*)&connetAdrr, &len);//等待socket客户端连接
+		
+		if (IOCPsocket.m_newClinetSockfd == INVALID_SOCKET)
 		{
-			#ifdef _PrintError_
-				perror("accept");
-			#endif
-			return -4;
+			Sleep(500);
+			printf("硬件客户端连接无效accept返回值%d\r\n" , IOCPsocket.m_newClinetSockfd);
+			IOCPsocket.closeAllClient(); //关闭完成端口，释放相关资源，清除连接
+			IOCPsocket.Create("", MYPORT, true);//创建SOCKET服务端，针对硬件连接
+			IOCPsocket.Listen(10);
+			continue;
 		}
-		else
+		else  if (IOCPsocket.m_newClinetSockfd < max_value)
 		{
-			if(APPsocket.m_setIOCPKEY.size() < MAX_HARD_TCP_NUM) //判断连接数
+			if(IOCPsocket.m_setIOCPKEY.size() < MAX_HARD_TCP_NUM) //判断连接数
 			{
-				printf("\n接入一个socket客户端：%s\r\n" ,inet_ntoa(connetAdrr.sin_addr) );
+				printf("\n接入一个硬件客户端：%s,累计连接数%d\r\n" ,inet_ntoa(connetAdrr.sin_addr) , IOCPsocket.m_setIOCPKEY.size() );
 			}
 			else
 			{
@@ -192,30 +194,30 @@ int   socket_accept_thread(void *ptr)
     return 0;
 	
 }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////服务端等待连接///////////////////////////////////////////////////////////////////////
 int   APP_accept_thread(void *ptr)
 {
-//	FILE *fpin,*fpout;
-//	time_t   rawtime;
-	//struct tm *curTime;
-	char filename[256]={0};
-	sockaddr_in    connetAdrr;
-	int len = sizeof(connetAdrr);
-	
+	SOCKADDR_IN    connetAdrr;
+	int len = sizeof(sockaddr);
+	SOCKET  max_value = 0xfffffffffffffffe;
 	while(true){ //等待连接accept
 		
-		if((APPsocket.m_newClinetSockfd = accept( APPsocket.m_sockfd,(struct sockaddr*)&connetAdrr,&len))<0)//等待socket客户端连接
+		printf("服务器listen监听的APP软件socket号: %d", APPsocket.m_sockfd);
+		APPsocket.m_newClinetSockfd = accept(APPsocket.m_sockfd, (struct sockaddr*)&connetAdrr, &len); //等待socket客户端连接
+		if (APPsocket.m_newClinetSockfd == INVALID_SOCKET)
 		{
-			#ifdef _PrintError_
-				perror("accept");
-			#endif
-			return -4;
-		}
-		else
+			Sleep(500);
+			printf("APP客户端连接无效accept返回值%d\n" , APPsocket.m_newClinetSockfd);
+			APPsocket.closeAllClient(); //关闭完成端口，释放相关资源
+			APPsocket.Create("", APP_PORT, true); //创建socket服务，针对APP连接
+			APPsocket.Listen(10);
+			continue;
+		}		
+		else  if (APPsocket.m_newClinetSockfd < max_value )
 		{
 			if(APPsocket.m_setIOCPKEY.size() < MAX_APP_TCP_NUM) //判断连接数
 			{
-				printf("\n接入一个APP客户端：%s\r\n" ,inet_ntoa(connetAdrr.sin_addr) );
+				printf("\n接入一个APP客户端：%s, 累计连接数%d\r\n" ,inet_ntoa(connetAdrr.sin_addr), APPsocket.m_setIOCPKEY.size());
 			}
 			else
 			{
@@ -248,7 +250,6 @@ int   APP_accept_thread(void *ptr)
 		DWORD Flags = 0;
 		int iRev = WSARecv(APPsocket.m_newClinetSockfd,&pContextKey->Buffer,1,&pContextKey->NumberOfBytesRecv,&Flags,
 			&APPsocket.m_overlap , NULL);
-		
 		
 	}
 
