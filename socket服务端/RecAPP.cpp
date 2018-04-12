@@ -398,7 +398,11 @@ int  responseAPPregester(SOCKET   ClientS ,int Command, char * src, unsigned  in
 	string  mstr_pwd=""; //存储用户密码
     int res;
 
-    mysql_init(&myCont);
+	if (mysql_init(&myCont) == NULL)//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
 
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
@@ -625,7 +629,11 @@ int  responseAPPdenglu(SOCKET   ClientS ,int Command, char * src, unsigned  int 
 	string  mstr_pwd=""; //存储用户密码
     int res;
 
-    mysql_init(&myCont);
+	if (mysql_init(&myCont) == NULL)//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
 
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
@@ -794,7 +802,11 @@ int  responseAPPbangding(SOCKET   ClientS ,Json::Value  mJsonValue)
 	GetLocalTime( &sys ); 
 	printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
 
-    mysql_init(&myCont);//初始化mysql
+	if (mysql_init(&myCont) == NULL)//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
 
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
@@ -979,7 +991,11 @@ int  responseAPPbind (SOCKET   ClientS ,int Command, char * src, unsigned  int  
 		return  -5;
 	}
 	
-	 mysql_init(&myCont);//初始化mysql
+	if (mysql_init(&myCont) == NULL)//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
 
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
@@ -1221,8 +1237,11 @@ int  responseAPPgetstate(SOCKET   ClientS ,Json::Value  mJsonValue)
 	GetLocalTime( &sys ); 
 	printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
 
-    mysql_init(&myCont);//初始化mysql
-
+    if (mysql_init(&myCont) == NULL)//初始化mysql(&myCont);//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
         //mysql_query(&myCont, "SET NAMES utf8"); //设置编码格式       
@@ -1452,8 +1471,11 @@ int  responseAPPjiebang(SOCKET   ClientS ,Json::Value  mJsonValue)
 
 	string  m_strToken = "SELECT  username  FROM  register_user  WHERE token = '" + str_token + "'";
 	
-    mysql_init(&myCont);//初始化mysql
-
+    if (mysql_init(&myCont) == NULL)//初始化mysql(&myCont);//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
         //mysql_query(&myCont, "SET NAMES utf8"); //设置编码格式
@@ -1585,8 +1607,11 @@ int  responseAPPgetalldevicestate(SOCKET   ClientS ,Json::Value  mJsonValue)
 	//GetLocalTime( &sys ); 
 	//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
 
-    mysql_init(&myCont);//初始化mysql
-
+    if (mysql_init(&myCont) == NULL)//初始化mysql(&myCont);//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
         //mysql_query(&myCont, "SET NAMES utf8"); //设置编码格式       
@@ -1910,8 +1935,11 @@ int  APPSetWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue)
 	GetLocalTime( &sys ); 
 	printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
 
-    mysql_init(&myCont);
-
+    if (mysql_init(&myCont) == NULL)//初始化mysql(&myCont);
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
         //mysql_query(&myCont, "SET NAMES utf8"); //设置编码格式
@@ -2095,8 +2123,11 @@ int  APPUnSetWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue)
 	GetLocalTime( &sys ); 
 	printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
 
-    mysql_init(&myCont);
-
+    if (mysql_init(&myCont) == NULL)//初始化mysql(&myCont);
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
         //mysql_query(&myCont, "SET NAMES utf8"); //设置编码格式
@@ -2279,7 +2310,11 @@ int  APPConfigWeiLan(SOCKET   ClientS ,Json::Value  mJsonValue)
 	GetLocalTime( &sys ); 
 	printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
 
-    mysql_init(&myCont);
+	if (mysql_init(&myCont) == NULL)//初始化mysql(&myCont);
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
 
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
@@ -2415,8 +2450,11 @@ int  responseAPPrequest_weilan_alarm(SOCKET   ClientS ,Json::Value  mJsonValue)
 	//GetLocalTime( &sys ); 
 	//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
 
-    mysql_init(&myCont);//初始化mysql
-
+	if (mysql_init(&myCont) == NULL)//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
         //mysql_query(&myCont, "SET NAMES utf8"); //设置编码格式       
@@ -2624,7 +2662,11 @@ int  APPCheckAlarmTable(SOCKET ClientS , string gps , string  card)
 	//GetLocalTime( &sys ); 
 	//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
 
-    mysql_init(&myCont);
+	if (mysql_init(&myCont) == NULL)//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
 
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
@@ -2904,8 +2946,11 @@ int  responseAPPrequest_weilan_data(SOCKET   ClientS ,Json::Value  mJsonValue)
 	//GetLocalTime( &sys ); 
 	//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
 
-    mysql_init(&myCont);//初始化mysql
-
+	if (mysql_init(&myCont) == NULL)//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
         //mysql_query(&myCont, "SET NAMES utf8"); //设置编码格式       

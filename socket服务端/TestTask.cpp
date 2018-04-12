@@ -128,7 +128,7 @@ void CTestTask::taskSaveSQL()
 		if(pd==NULL)
 		{
 			LeaveCriticalSection(&mSaveDataLock);//解锁
-			std::cout<<"数据队列出队失败!!!"<<std::endl;
+			std::cout<<"硬件数据队列出队失败!!!"<<std::endl;
 			
 		}else
 		{
@@ -140,7 +140,7 @@ void CTestTask::taskSaveSQL()
 			pmdata = pd;
 
 			LeaveCriticalSection(&mSaveDataLock);//解锁
-
+			//启动数据保存函数
 			SaveDataSQL( pmdata->SocketNum , pmdata->cmd,  (char*)pmdata->RecData , pmdata->DataLen);//采集数据包中的实际用户数据信息
 		
 		}
@@ -363,9 +363,13 @@ char  SaveDataSQL(SOCKET   ClientS ,int Command, char * src, unsigned  int  len)
 	{
 		case   CLIENT_GPS_INFO: //硬件上传GPS
 			#ifdef  WIN_64_DEF
-			//SaveHardStateInfo(ClientS , m_json );
-			
-			SaveGPSData(ClientS , (unsigned  char *)src , len);
+			try {
+				SaveGPSData(ClientS, (unsigned  char *)src, len);
+			}
+			catch (exception E) {
+				cout << "保存硬件数据出现异常！可能是数据库插入导致的！" << endl;
+				return -1;
+			}
 			#endif
 			return 0;
 		break;
@@ -484,8 +488,11 @@ int  SaveHardStateInfo(SOCKET   ClientS , Json::Value  mJsonValue)
 		cout << "mysql_library_init() failed" << endl;
 		return -1;
 	}
-    mysql_init(&myCont);//初始化mysql
-
+    if (mysql_init(&myCont) == NULL)//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
         //mysql_query(&myCont, "SET NAMES utf8"); //设置编码格式       
@@ -598,7 +605,7 @@ int   SaveGPSData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len)
     const char host[] = "localhost";    
     char table[] = "bike";  
 	unsigned int port = 3306;   
-
+//	return 0;
 	MYSQL myCont;
     MYSQL_RES *result;
     int res;
@@ -611,7 +618,6 @@ int   SaveGPSData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len)
 		sprintf(&temp[2*i], "%02x", *(src+2+i)); //小写16 进制，宽度占2个位置，右对齐，不足补0
 	
 	temp[8]='\0';
-	//str_card = getNullStr(temp);
 	str_card = temp;
 	//if( *(src+2+3)< 50 )
 	//printf("%s\n",str_card);//打印卡号
@@ -826,8 +832,11 @@ int   SaveBaseStationData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  in
 		cout << "mysql_library_init() failed" << endl;
 		return -1;
 	}
-    mysql_init(&myCont);//初始化mysql
-
+    if (mysql_init(&myCont) == NULL)//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
 		//mysql_query(&myCont, "SET NAMES utf8"); //设置编码格式       
@@ -978,8 +987,11 @@ int   SaveAlarmData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len
 		cout << "mysql_library_init() failed" << endl;
 		return -1;
 	}
-    mysql_init(&myCont);//初始化mysql
-
+    if (mysql_init(&myCont) == NULL)//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
 		//mysql_query(&myCont, "SET NAMES utf8"); //设置编码格式       
@@ -1113,7 +1125,12 @@ int   WX_SendBufang_ToHard( )
 		cout << "mysql_library_init() failed" << endl;
 		return -1;
 	}
-    mysql_init(&myCont);
+
+	if (mysql_init(&myCont) == NULL)//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
 
 	//return -1;
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
@@ -1303,7 +1320,11 @@ int   WX_Send_MotorLock( )
 		cout << "mysql_library_init() failed" << endl;
 		return -1;
 	}
-	mysql_init(&myCont);
+	if (mysql_init(&myCont) == NULL)//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
 
 	if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
 	{
@@ -1486,7 +1507,11 @@ int   WX_Send_DeviceOpenToHard()
 		cout << "mysql_library_init() failed" << endl;
 		return -1;
 	}
-	mysql_init(&myCont);
+	if (mysql_init(&myCont) == NULL)//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
 
 	if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
 	{

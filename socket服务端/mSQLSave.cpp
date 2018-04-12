@@ -72,7 +72,11 @@ int  APPUpdateUserState(SOCKET   ClientS ,Json::Value  mJsonValue)
 	GetLocalTime( &sys ); 
 	printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
 
-    mysql_init(&myCont);
+	if (mysql_init(&myCont) == NULL)//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
 
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
@@ -207,7 +211,11 @@ int  FindToken(string  token)
     MYSQL_RES  *result ;
     int res;
 
-    mysql_init(&myCont);
+	if (mysql_init(&myCont) == NULL)//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
 
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {

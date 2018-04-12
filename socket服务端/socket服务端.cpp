@@ -165,31 +165,26 @@ int   socket_accept_thread(void *ptr)
 				continue;
 			}							 			
 		}
-
-		IOCPContextKey* pContextKey = new IOCPContextKey; //创建一块结构体内存,给IOCP完成端口存数据用
 		
-		if (NULL == pContextKey)
-		{
-			return -5;
-		}
-		{
-			CMutex::Lock lock(IOCPsocket.m_mutex);//上锁，进入临界区,构造函数中调用的
+		try{
+			IOCPContextKey* pContextKey = new IOCPContextKey; //创建一块结构体内存,给IOCP完成端口存数据用
+			CMutex::Lock lock(IOCPsocket.m_mutex);//上锁，进入临界区,构造函数中调用的		
+			memset(pContextKey->szMessage,0,pContextKey->Buffer.len);//当前缓存清0
+			pContextKey->clientSocket = IOCPsocket.m_newClinetSockfd;//保存当前连接号
+			pContextKey->opType =  RECV_POSTED;
 			IOCPsocket.m_setIOCPKEY.insert(pContextKey);//创建添加一个客户端key
-			
+			CreateIoCompletionPort((HANDLE)IOCPsocket.m_newClinetSockfd, IOCPsocket.m_CompletionPort, (ULONG_PTR)pContextKey, 0);//当前连接绑定到IOCP完成端口
+			//投递第一个rev信息
+			DWORD Flags = 0;
+			int iRev = WSARecv(IOCPsocket.m_newClinetSockfd,&pContextKey->Buffer,1,&pContextKey->NumberOfBytesRecv,&Flags,
+				&IOCPsocket.m_overlap , NULL);
+			//int iRetSend = WSASend(IOCPsocket.m_newClinetSockfd , (LPWSABUF)buffer ,1,(LPDWORD)strlen(buffer) ,0, &IOCPsocket.m_overlap,NULL); //发送剩余的   
 		}
-
-		memset(pContextKey->szMessage,0,pContextKey->Buffer.len);//当前缓存清0
-		pContextKey->clientSocket = IOCPsocket.m_newClinetSockfd;//保存当前连接号
-		pContextKey->opType =  RECV_POSTED;
-
-		CreateIoCompletionPort((HANDLE)IOCPsocket.m_newClinetSockfd, IOCPsocket.m_CompletionPort, (ULONG_PTR)pContextKey, 0);//当前连接绑定到IOCP完成端口
-
-		//投递第一个rev信息
-		DWORD Flags = 0;
-		int iRev = WSARecv(IOCPsocket.m_newClinetSockfd,&pContextKey->Buffer,1,&pContextKey->NumberOfBytesRecv,&Flags,
-			&IOCPsocket.m_overlap , NULL);
-		//int iRetSend = WSASend(IOCPsocket.m_newClinetSockfd , (LPWSABUF)buffer ,1,(LPDWORD)strlen(buffer) ,0, &IOCPsocket.m_overlap,NULL); //发送剩余的   
-	
+		catch (const bad_alloc * E) {
+			cout << "pContextKey申请内存空间失败" << E << endl;
+			//system("pause");
+			//return -1;
+		}
 	}
     return 0;
 	
@@ -229,28 +224,25 @@ int   APP_accept_thread(void *ptr)
 			
 			 			
 		}
-		IOCPContextKeyAPP* pContextKey = new IOCPContextKeyAPP;//新建用户数据缓存区
-		
-		if (NULL == pContextKey)
-		{
-			return -5;
+		try{
+			IOCPContextKeyAPP* pContextKey = new IOCPContextKeyAPP;//新建用户数据缓存区	
+			CLockMutex::Lock lock(APPsocket.m_mutex);//上锁，进入临界区,构造函数中调用的				
+			memset(pContextKey->szMessage,0,pContextKey->Buffer.len);//当前缓存清0
+			pContextKey->clientSocket = APPsocket.m_newClinetSockfd;//保存当前socket连接号
+			pContextKey->opType =  APP_RECV_POSTED;
+			APPsocket.m_setIOCPKEY.insert(pContextKey);//添加一个客户端key到集合中
+			CreateIoCompletionPort((HANDLE)APPsocket.m_newClinetSockfd, APPsocket.m_CompletionPort, (ULONG_PTR)pContextKey, 0);//当前socket绑定到IOCP完成端口
+
+			//投递第一个rev信息;
+			DWORD Flags = 0;
+			int iRev = WSARecv(APPsocket.m_newClinetSockfd,&pContextKey->Buffer,1,&pContextKey->NumberOfBytesRecv,&Flags,
+				&APPsocket.m_overlap , NULL);
 		}
-		
-		
-		CLockMutex::Lock lock(APPsocket.m_mutex);//上锁，进入临界区,构造函数中调用的
-		APPsocket.m_setIOCPKEY.insert(pContextKey);//添加一个客户端key到集合中
-			
-		memset(pContextKey->szMessage,0,pContextKey->Buffer.len);//当前缓存清0
-		pContextKey->clientSocket = APPsocket.m_newClinetSockfd;//保存当前socket连接号
-		pContextKey->opType =  APP_RECV_POSTED;
-
-		CreateIoCompletionPort((HANDLE)APPsocket.m_newClinetSockfd, APPsocket.m_CompletionPort, (ULONG_PTR)pContextKey, 0);//当前socket绑定到IOCP完成端口
-
-		//投递第一个rev信息;
-		DWORD Flags = 0;
-		int iRev = WSARecv(APPsocket.m_newClinetSockfd,&pContextKey->Buffer,1,&pContextKey->NumberOfBytesRecv,&Flags,
-			&APPsocket.m_overlap , NULL);
-		
+		catch (const bad_alloc * E) {
+			cout << "pContextKey申请内存空间失败" << E << endl;
+			//system("pause");
+			//return -1;
+		}
 	}
 
     return 0;
@@ -356,7 +348,11 @@ int  InitInsertBikeDatabaseUser()
 //    MYSQL_RES *result;
 //    MYSQL_ROW sql_row;
     int res;
-    mysql_init(&myCont);
+	if (mysql_init(&myCont) == NULL)//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
 
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
@@ -432,7 +428,11 @@ int  InitInsertBikeDatabaseCardinfo()
     int res;
 
 
-    mysql_init(&myCont);
+	if (mysql_init(&myCont) == NULL)//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
 
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
@@ -521,7 +521,11 @@ int  UpdateCardState()
     int res;
 
 
-    mysql_init(&myCont);
+	if (mysql_init(&myCont) == NULL)//初始化mysql
+	{
+		printf("inital mysql handle error");
+		return -11;
+	}
 
     if (mysql_real_connect(&myCont, host, user, pswd, table, port, NULL, 0))
     {
