@@ -1,25 +1,29 @@
 ﻿  stdafx.cpp
   TestTask.cpp
+c:\users\administrator\desktop\appsocket服务端\socket服务端\testtask.cpp(1656): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 1 拥有了类型“SOCKET”
+  c:\users\administrator\desktop\appsocket服务端\socket服务端\testtask.cpp(1656): note: 请考虑在格式字符串中使用“%lld”
+  c:\users\administrator\desktop\appsocket服务端\socket服务端\testtask.cpp(1656): note: 请考虑在格式字符串中使用“%Id”
+  c:\users\administrator\desktop\appsocket服务端\socket服务端\testtask.cpp(1656): note: 请考虑在格式字符串中使用“%I64d”
   Task.cpp
   socket服务端.cpp
-c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(142): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 1 拥有了类型“SOCKET”
-  c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(142): note: 请考虑在格式字符串中使用“%lld”
-  c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(142): note: 请考虑在格式字符串中使用“%Id”
-  c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(142): note: 请考虑在格式字符串中使用“%I64d”
 c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(148): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 1 拥有了类型“SOCKET”
   c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(148): note: 请考虑在格式字符串中使用“%lld”
   c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(148): note: 请考虑在格式字符串中使用“%Id”
   c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(148): note: 请考虑在格式字符串中使用“%I64d”
+c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(158): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 1 拥有了类型“SOCKET”
+  c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(158): note: 请考虑在格式字符串中使用“%lld”
+  c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(158): note: 请考虑在格式字符串中使用“%Id”
+  c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(158): note: 请考虑在格式字符串中使用“%I64d”
 c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(158): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“unsigned __int64”
   c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(158): note: 请考虑在格式字符串中使用“%zd”
-c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(200): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 1 拥有了类型“SOCKET”
-  c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(200): note: 请考虑在格式字符串中使用“%lld”
-  c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(200): note: 请考虑在格式字符串中使用“%Id”
-  c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(200): note: 请考虑在格式字符串中使用“%I64d”
 c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(205): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 1 拥有了类型“SOCKET”
   c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(205): note: 请考虑在格式字符串中使用“%lld”
   c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(205): note: 请考虑在格式字符串中使用“%Id”
   c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(205): note: 请考虑在格式字符串中使用“%I64d”
+c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(215): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 1 拥有了类型“SOCKET”
+  c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(215): note: 请考虑在格式字符串中使用“%lld”
+  c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(215): note: 请考虑在格式字符串中使用“%Id”
+  c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(215): note: 请考虑在格式字符串中使用“%I64d”
 c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(215): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“unsigned __int64”
   c:\users\administrator\desktop\appsocket服务端\socket服务端\socket服务端.cpp(215): note: 请考虑在格式字符串中使用“%zd”
   SocketTCP.cpp

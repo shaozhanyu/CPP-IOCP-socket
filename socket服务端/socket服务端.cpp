@@ -139,7 +139,7 @@ int   socket_accept_thread(void *ptr)
 
 	while(true){ //死循环等待连接accept
 
-		printf("服务器listen监听的硬件socket号: %d" , IOCPsocket.m_sockfd);
+		printf("服务器监听新的硬件连接\n" );
 		IOCPsocket.m_newClinetSockfd = accept(IOCPsocket.m_sockfd, (struct sockaddr*)&connetAdrr, &len);//等待socket客户端连接
 		
 		if (IOCPsocket.m_newClinetSockfd == INVALID_SOCKET)
@@ -155,7 +155,7 @@ int   socket_accept_thread(void *ptr)
 		{
 			if(IOCPsocket.m_setIOCPKEY.size() < MAX_HARD_TCP_NUM) //判断连接数
 			{
-				printf("\n接入一个硬件客户端：%s,累计连接数%d\r\n" ,inet_ntoa(connetAdrr.sin_addr) , IOCPsocket.m_setIOCPKEY.size() );
+				printf("\n接入一个硬件客户端：%d,累计连接数%d\r\n" ,IOCPsocket.m_newClinetSockfd , IOCPsocket.m_setIOCPKEY.size() );
 			}
 			else
 			{
@@ -197,7 +197,7 @@ int   APP_accept_thread(void *ptr)
 	SOCKET  max_value = 0xfffffffffffffffe;
 	while(true){ //等待连接accept
 		
-		printf("服务器listen监听的APP软件socket号: %d", APPsocket.m_sockfd);
+		printf("服务器监听新的APP连接\n");
 		APPsocket.m_newClinetSockfd = accept(APPsocket.m_sockfd, (struct sockaddr*)&connetAdrr, &len); //等待socket客户端连接
 		if (APPsocket.m_newClinetSockfd == INVALID_SOCKET)
 		{
@@ -212,7 +212,7 @@ int   APP_accept_thread(void *ptr)
 		{
 			if(APPsocket.m_setIOCPKEY.size() < MAX_APP_TCP_NUM) //判断连接数
 			{
-				printf("\n接入一个APP客户端：%s, 累计连接数%d\r\n" ,inet_ntoa(connetAdrr.sin_addr), APPsocket.m_setIOCPKEY.size());
+				printf("\n接入一个APP客户端：%d, 累计连接数%d\r\n", APPsocket.m_newClinetSockfd , APPsocket.m_setIOCPKEY.size());
 			}
 			else
 			{
