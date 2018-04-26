@@ -1153,8 +1153,6 @@ int   WX_SendBufang_ToHard( )
 								getsucess = true;
 								//cout<<allow_alarm<<endl;
 							}
-
-
 						}
 						//printf("[Row %d,Col %d]==>[%s]\n",f1,f2,mysql_row[f2]); //打印每行的各个列数据			
 					}//取出一条待发送布防操作指令
@@ -1169,7 +1167,6 @@ int   WX_SendBufang_ToHard( )
 						mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存										//cout << "no alarm_set list !\n" << endl;
 						return -1;//布防指令表没有待发送的指令，返回-1
 					}
-					mysql_free_result(setalarm_result); //释放缓存，特别注意，不释放会导致内存增长
 					
 					gps_data_success = false;
 					m_strToken = "SELECT  *  FROM  card_data  WHERE card = '" + str_card + "'ORDER BY card_id DESC LIMIT 0,1 ";
@@ -1362,12 +1359,11 @@ int   WX_SendBufang_ToHard( )
 							cout << "发送撤防指令！" << endl;
 						}
 					}
-				}
+				}//for报警设置行数据
+
 			}
-			else //如果没有数据
-			{
-				mysql_free_result(setalarm_result); //释放缓存，特别注意，不释放会导致内存增长
-			}
+			
+			mysql_free_result(setalarm_result); //释放缓存，特别注意，不释放会导致内存增长
 		}//查询布防命令列表
 		else
 		{
@@ -1509,8 +1505,6 @@ int   WX_Send_MotorLock( )
 						mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存										//cout << "no alarm_set list !\n" << endl;
 						return -1;//布防指令表没有待发送的指令，返回-1
 					}
-	
-					mysql_free_result(setalarm_result); //释放缓存，特别注意，不释放会导致内存增长
 			
 					gps_data_success = false;
 					m_strToken = "SELECT  *  FROM  card_data  WHERE card = '" + str_card + "'ORDER BY card_id DESC LIMIT 0,1 ";
@@ -1661,8 +1655,8 @@ int   WX_Send_MotorLock( )
 							}
 						}
 					}
-					if ((card_lock.find("ACLOSE") != string::npos && (0 == allow_alarm.compare("0"))) ||
-						(card_lock.find("AOPEN") != NULL && (0 == allow_alarm.compare("1"))))
+					if ( ((card_lock.find("ACLOSE") != string::npos) && (0 == allow_alarm.compare("0"))) ||
+						((card_lock.find("AOPEN") != string::npos) && (0 == allow_alarm.compare("1")))  )
 					{
 						m_strToken = "DELETE    FROM  set_motor_lock   WHERE card = '" + str_card + "' ORDER BY time ASC LIMIT 1 ";
 						res = mysql_query(&myCont, (const  char *)m_strToken.c_str()); //执行SQL语句,通过token查找username
@@ -1704,11 +1698,8 @@ int   WX_Send_MotorLock( )
 					}
 				}
 			}
-			else
-			{
-				mysql_free_result(setalarm_result); //释放缓存，特别注意，不释放会导致内存增长
-			}
-			
+		
+			mysql_free_result(setalarm_result); //释放缓存，特别注意，不释放会导致内存增长
 		}//查询锁电机命令列表
 		else
 		{
@@ -1851,9 +1842,7 @@ int   WX_Send_DeviceOpenToHard()
 						mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存										//cout << "no alarm_set list !\n" << endl;
 						return -1;//布防指令表没有待发送的指令，返回-1
 					}
-			
-					mysql_free_result(setalarm_result); //释放缓存，特别注意，不释放会导致内存增长
-			
+
 					gps_data_success = false;
 					m_strToken = "SELECT  *  FROM  card_data  WHERE card = '" + str_card + "'ORDER BY card_id DESC LIMIT 0,1 ";
 					getsucess = false;
@@ -1999,8 +1988,8 @@ int   WX_Send_DeviceOpenToHard()
 						}
 					}
 					//要布防的操作和硬件实际状态一致，就删除布防命令
-					if ( (card_lock.find("BCLOSE") != string::npos && (0 == allow_alarm.compare("0"))) ||
-						(card_lock.find("BOPEN") != string::npos && (0 == allow_alarm.compare("1"))) )
+					if ( ((card_lock.find("BCLOSE") != string::npos) && (0 == allow_alarm.compare("0"))) ||
+						((card_lock.find("BOPEN") != string::npos) && (0 == allow_alarm.compare("1"))) )
 					{
 						m_strToken = "DELETE    FROM  set_device_open   WHERE card = '" + str_card + "' ORDER BY time ASC LIMIT 1 ";
 						res = mysql_query(&myCont, (const  char *)m_strToken.c_str()); //执行SQL语句,通过token查找username
@@ -2041,10 +2030,7 @@ int   WX_Send_DeviceOpenToHard()
 					}
 				}
 			}
-			else
-			{
-				mysql_free_result(setalarm_result); //释放缓存，特别注意，不释放会导致内存增长
-			}
+			mysql_free_result(setalarm_result); //释放缓存，特别注意，不释放会导致内存增长
 		}//查询开电门命令列表
 		else
 		{
