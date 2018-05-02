@@ -91,6 +91,8 @@ int  CSocketTCP::Create(char* cIP,int iPort,bool bRebind)
 	char opt=1;
 	if((m_sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP))<0)
 	{
+		cout << "硬件 socket failed!" << endl;
+		perror("socket");
 #ifdef  _PrintError_
 		perror("socket");
 #endif
@@ -137,6 +139,7 @@ int  CSocketTCP::Create(char* cIP,int iPort,bool bRebind)
 	int ret = bind(m_sockfd, (struct sockaddr *)&clientAddr, sizeof(clientAddr));//绑定套接字
 	if ( -1 == ret)
 	{
+		cout << "bind failed!" << endl;
 #ifdef _PrintError
 		printf("bind failed %s \n", strerror(errno));
 #endif
@@ -157,12 +160,12 @@ int  CSocketTCP::Create(char* cIP,int iPort,bool bRebind)
 	//在调用closesocket()时还有数据未发送完，允许等待
 	// 若m_sLinger.l_onoff=0;则调用closesocket()后强制关闭
 	m_sLinger.l_linger = 2; //设置等待时间为2秒
-	setsockopt(m_sockfd, SOL_SOCKET, SO_LINGER, ( const char* )&m_sLinger, sizeof( linger ) );
+	//setsockopt(m_sockfd, SOL_SOCKET, SO_LINGER, ( const char* )&m_sLinger, sizeof( linger ) );
 
 	//在send(),recv()过程中有时由于网络状况等原因，发收不能预期进行,而设置收发时限：
-	int nNetTimeout=1000;//1秒
+	//int nNetTimeout=1000;//1秒
 	//发送时限
-	setsockopt(m_sockfd , SOL_SOCKET , SO_SNDTIMEO ,(char *)&nNetTimeout,sizeof(int));
+	//setsockopt(m_sockfd , SOL_SOCKET , SO_SNDTIMEO ,(char *)&nNetTimeout,sizeof(int));
 	//接收时限
 	//setsockopt(m_sockfd , SOL_SOCKET , SO_RCVTIMEO ,(char *)&nNetTimeout,sizeof(int));
 
