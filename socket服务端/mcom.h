@@ -49,13 +49,14 @@ typedef   struct   HardUnit{   //自定义用来插入队列中数据结构
 #define     RF_CARD_NUM              1*10000  //可存储的卡号数量
 #define     RF_CARD_LEN              4
 ////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 #define    DATA_HEAD_LEN                  4+19 //固定协议头长度
-#define    DATA_CLIENT_DATA_NUM_LEN       2  //数据区独立数据个数和每个独立数据的长度
-#define    DATA_CLIENT_DATA_LEN           6  //每个独立数据段数据 卡号+状态+锁定
-#define    DATA_CARD_LEN                  (DATA_CLIENT_DATA_NUM_LEN+DATA_CLIENT_DATA_LEN)
+#define    DEVICE_STATE_LEN             2  //数据区独立数据个数和每个独立数据的长度
+#define    DEVICE_INFO_LEN               6  //每个独立数据段数据 卡号+状态+锁定
+#define    DATA_CARD_LEN                  (DEVICE_STATE_LEN+DEVICE_INFO_LEN)
 #define    DATA_END_LEN                   1  //校验
 #define    APP_MIN_DATA_LEN               (DATA_HEAD_LEN+DATA_END_LEN) //APP最小数据包
-#define    DATA_WHOLE_PACKET_LEN          (DATA_HEAD_LEN+DATA_CLIENT_DATA_NUM_LEN+DATA_CLIENT_DATA_LEN+DATA_END_LEN)
+#define    DATA_WHOLE_PACKET_LEN          (DATA_HEAD_LEN+DATA_CARD_LEN+DATA_END_LEN)
 ////////////////////////////////////////////////////////////////////////////
 #define     SEVER_TO_CLIENT       0x5A
 #define     CLIENT_TO_SEVER       0x5B
@@ -164,6 +165,8 @@ int   SaveAlarmData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len
 int   WX_SendBufang_ToHard();
 int   WX_Send_MotorLock();
 int   WX_Send_DeviceOpenToHard();
+/////////////////////////////
+time_t convert_string_to_time_t(const std::string & time_string);
 #endif
 
 
