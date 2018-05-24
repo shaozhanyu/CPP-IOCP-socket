@@ -89,9 +89,9 @@ int  CSocketTCP::Create(char* cIP,int iPort,bool bRebind)
 		return -1;
 	}
 	char opt=1;
-	if((m_sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP))<0)
+	if((m_sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == INVALID_SOCKET)
 	{
-		cout << "硬件 socket failed!" << endl;
+		cout << "硬件 socket 初始化 failed!" << endl;
 		perror("socket");
 #ifdef  _PrintError_
 		perror("socket");
@@ -100,6 +100,7 @@ int  CSocketTCP::Create(char* cIP,int iPort,bool bRebind)
 	}
 	else
 	{
+
 		printf("创建硬件socket套接字成功！\r\n");
 	}
 	// 创建IOCP的内核对象
@@ -137,7 +138,7 @@ int  CSocketTCP::Create(char* cIP,int iPort,bool bRebind)
 	}
 
 	int ret = bind(m_sockfd, (struct sockaddr *)&clientAddr, sizeof(clientAddr));//绑定套接字
-	if ( -1 == ret)
+	if (SOCKET_ERROR == ret)
 	{
 		cout << "bind failed!" << endl;
 #ifdef _PrintError
@@ -162,6 +163,46 @@ int  CSocketTCP::Create(char* cIP,int iPort,bool bRebind)
 	m_sLinger.l_linger = 2; //设置等待时间为2秒
 	//setsockopt(m_sockfd, SOL_SOCKET, SO_LINGER, ( const char* )&m_sLinger, sizeof( linger ) );
 
+	#define   SIO_RCVALL                         _WSAIOW(IOC_VENDOR,1)  
+	#define   SIO_RCVALL_MCAST             _WSAIOW(IOC_VENDOR,2)  
+	#define   SIO_RCVALL_IGMPMCAST     _WSAIOW(IOC_VENDOR,3)  
+	#define   SIO_KEEPALIVE_VALS         _WSAIOW(IOC_VENDOR,4)  
+	#define   SIO_ABSORB_RTRALERT       _WSAIOW(IOC_VENDOR,5)  
+	#define   SIO_UCAST_IF                     _WSAIOW(IOC_VENDOR,6)  
+	#define   SIO_LIMIT_BROADCASTS     _WSAIOW(IOC_VENDOR,7)  
+	#define   SIO_INDEX_BIND                 _WSAIOW(IOC_VENDOR,8)  
+	#define   SIO_INDEX_MCASTIF           _WSAIOW(IOC_VENDOR,9)    
+	#define   SIO_INDEX_ADD_MCAST       _WSAIOW(IOC_VENDOR,10)  
+	#define   SIO_INDEX_DEL_MCAST       _WSAIOW(IOC_VENDOR,11)  
+	struct tcp_keepalive {
+		u_long     onoff;
+		u_long     keepalivetime; //第一次开始发送的时间（单位毫秒）
+		u_long     keepaliveinterval;//每次检测的间隔 （单位毫秒）
+	};
+
+	// 开启KeepAlive
+	BOOL bKeepAlive = TRUE;
+	int nRet = setsockopt(m_sockfd, SOL_SOCKET, SO_KEEPALIVE, (char*)&bKeepAlive, sizeof(bKeepAlive));
+	if (nRet == SOCKET_ERROR)
+	{
+		printf("open-keepalive-error\r\n");
+		return -11;
+	}
+
+	// 设置KeepAlive参数
+	tcp_keepalive alive_in = { 0 };
+	tcp_keepalive alive_out = { 0 };
+	alive_in.keepalivetime = 20000;       // 开始首次KeepAlive探测前的TCP空闭时间
+	alive_in.keepaliveinterval = 1000;  // 两次KeepAlive探测间的时间间隔
+	alive_in.onoff = TRUE;
+	unsigned long ulBytesReturn = 0;
+	nRet = WSAIoctl(m_sockfd, SIO_KEEPALIVE_VALS, &alive_in, sizeof(alive_in),
+		&alive_out, sizeof(alive_out), &ulBytesReturn, NULL, NULL);
+	if (nRet == SOCKET_ERROR)
+	{
+		printf("set-keepalive-error\r\n");
+		return -12;
+	}
 	//在send(),recv()过程中有时由于网络状况等原因，发收不能预期进行,而设置收发时限：
 	//int nNetTimeout=1000;//1秒
 	//发送时限
@@ -179,11 +220,11 @@ int  CSocketTCP::Listen(int lNum )
 	{
 		return  -1;
 	}
-	if(-1 == m_sockfd)
+	if(SOCKET_ERROR == m_sockfd)
 	{
 		return -2;
 	}
-	if(listen(m_sockfd,lNum)<0)
+	if(listen(m_sockfd,lNum)== SOCKET_ERROR)
 	{
 #ifdef _PrintError_
 		perror("listen");
@@ -305,16 +346,35 @@ int CSocketTCP::IOCP_Run()
 		if (TRUE == nRetCode && FLAG_THRED_EXIT == dwBytesTransfered && 0 == pVoidContextKey)
 		{
 			//service exit thread
+			printf("client-close-keepalive-noreponse!\r\n");
 			break;
 		}
 		if (FALSE == nRetCode && 0 == dwBytesTransfered  && NULL == pVoidContextKey)
 		{
 			//CloseHandle(m_CompletionPort);
 			//完成端口关闭
-			break;
+			//break;
+			printf("client-close-keepalive-noreponse111!\r\n");
+			UnbindSocketCard(pIOCPContext->clientSocket);//刪除socket和卡號關聯表紀録
+			if (0 == m_setIOCPKEY.size())
+			{
+				break;
+			}
+			{
+				CMutex::Lock lock(m_mutex);//创建结构体类lock，初始化锁变量给构造函数，出函数，自动解析释放解锁
+				m_setIOCPKEY.erase(pIOCPContext);//删除当前连接
+			}
+			shutdown(pIOCPContext->clientSocket, SD_BOTH);
+			closesocket(pIOCPContext->clientSocket);
+			delete pIOCPContext;//释放类指针
+			pIOCPContext = NULL;
+
+			continue;
 		}
-		if (TRUE == nRetCode && 0 == dwBytesTransfered  && NULL != pVoidContextKey)
+		if (TRUE == nRetCode && 0 == dwBytesTransfered  && NULL != pVoidContextKey)//客户端主动断开连接
 		{
+			printf("client-closed333!\r\n");
+			UnbindSocketCard(pIOCPContext->clientSocket);//刪除socket和卡號關聯表紀録
 			//client close tcp
 			if (0 == m_setIOCPKEY.size())
 			{
@@ -334,6 +394,7 @@ int CSocketTCP::IOCP_Run()
 		if (NULL == pVoidContextKey)
 		{
 			//不许key为NULL
+			printf("client-close-keepalive-noreponse444!\r\n");
 			continue;
 		}
 
@@ -347,10 +408,10 @@ int CSocketTCP::IOCP_Run()
 					//totalcnt+=dwBytesTransfered;
 					//printf("接收数据累计：%d\n" , totalcnt);
 
-					EnterCriticalSection(&m_RECdataLock);//硬件数据接收线程加锁
-
-					if(pIOCPContext->Buffer.len < REC_SIZE)
+					if(pIOCPContext->Buffer.len>0 && pIOCPContext->Buffer.len < REC_SIZE)
 					{
+						EnterCriticalSection(&m_RECdataLock);//硬件数据接收线程加锁
+
 						memcpy( m_SocReUnit.RecData , pIOCPContext->Buffer.buf ,pIOCPContext->Buffer.len);//全局变量拷贝数据			
 						m_SocReUnit.DataLen = dwBytesTransfered;
 						m_SocReUnit.SocketNum =nSocket;
@@ -374,9 +435,9 @@ int CSocketTCP::IOCP_Run()
 							//printf("123\n");
 							//SetEvent(m_hEvent[0]);   
 						//}
+						LeaveCriticalSection(&m_RECdataLock);//解锁
 					}
-					LeaveCriticalSection(&m_RECdataLock);//解锁
-					
+										
 					//投递下个RECV命令
 					memset(pIOCPContext->Buffer.buf,0,pIOCPContext->Buffer.len);//接收缓存清0
 					pIOCPContext-> Buffer.len = DATA_LEN;//设置缓存大小
@@ -386,6 +447,8 @@ int CSocketTCP::IOCP_Run()
 					int iRecv = WSARecv(nSocket,&pIOCPContext->Buffer,1,&recvBytes,&Flags,&m_overlap,NULL);//接收socket数据
 					if (SOCKET_ERROR == iRecv && WSA_IO_PENDING != WSAGetLastError())
 					{
+						printf("client-close-keepalive-noreponse222!\r\n");
+						UnbindSocketCard(pIOCPContext->clientSocket);//刪除socket和卡號關聯表紀録
 						//接收错误，清除此socket
 						if (0 == m_setIOCPKEY.size())
 						{
@@ -397,6 +460,7 @@ int CSocketTCP::IOCP_Run()
 						}
 						shutdown(pIOCPContext->clientSocket,SD_BOTH);
 						closesocket(pIOCPContext->clientSocket);
+						//如果设置了调用closesocket()时还有数据未发送完，允许等待。那就不会关闭成功。下次send不会返回-1
 						delete pIOCPContext;
 						pIOCPContext = NULL;
 						continue;
@@ -405,75 +469,7 @@ int CSocketTCP::IOCP_Run()
 					{
 						//ok
 					}
-					/**********/
-
-#if    0
-				pIOCPContext->NumberOfBytesRecv = dwBytesTransfered;
-				pIOCPContext->opType = SEND_POSTED;
-				memcpy(pIOCPContext->Buffer.buf,"RECOK!",6);
-				//设置发送数据长度(这个长度不可能超出收到缓存的长度)
-				pIOCPContext->Buffer.len = 6;
-				//do your logic by default send origin data
-				//发送数据 WSASend函数，可以支持一次发送多个BUFFER的请求,减少了send的调用次数，实际检验证明，使用WSASend可以提高50%的性能甚至更多
-				int iRetSend = WSASend(nSocket,&pIOCPContext->Buffer,1,&sendBytes,0,&m_overlap,NULL);            
-				if (SOCKET_ERROR == iRetSend && WSA_IO_PENDING != WSAGetLastError())
-				{
-					//发送错误，清除此socket
-					if (0 == m_setIOCPKEY.size())
-					{
-						break;
-					}
-					{
-						CMutex::Lock lock(m_mutex);//创建结构体类lock，初始化锁变量给构造函数，出函数，自动解析释放解锁
-						m_setIOCPKEY.erase(pIOCPContext);
-					}
-					shutdown(pIOCPContext->clientSocket,SD_BOTH);
-					closesocket(pIOCPContext->clientSocket);
-					delete pIOCPContext;
-					pIOCPContext = NULL;
-					continue;
-				}
-				else
-				{
-					//ok
-				}
-#endif
-					
-			//如果接收的数据长度dwBytesTransfered，没有到达你要的长度，则继续发送一个WSARecv，填写参数的时候并把这个
-			//buffer 指针接着此指针的后面，直到接受的长度为我们所需的长度
-#if    0
-				//下面示例为返回客户端数据内容:
-				//收到客户端发送过来的数据
-				pIOCPContext->NumberOfBytesRecv = dwBytesTransfered;
-				pIOCPContext->opType = SEND_POSTED;
-
-				//设置发送数据长度(这个长度不可能超出收到缓存的长度)
-				pIOCPContext->Buffer.len = dwBytesTransfered;
-				//do your logic by default send origin data
-				//发送数据 WSASend函数，可以支持一次发送多个BUFFER的请求,减少了send的调用次数，实际检验证明，使用WSASend可以提高50%的性能甚至更多
-				int iRetSend = WSASend(nSocket,&pIOCPContext->Buffer,1,&sendBytes,0,&m_overlap,NULL);            
-				if (SOCKET_ERROR == iRetSend && WSA_IO_PENDING != WSAGetLastError())
-				{
-					//发送错误，清除此socket
-					if (0 == m_setIOCPKEY.size())
-					{
-						break;
-					}
-					{
-						CMutex::Lock lock(m_mutex);//创建结构体类lock，初始化锁变量给构造函数，出函数，自动解析释放解锁
-						m_setIOCPKEY.erase(pIOCPContext);
-					}
-					shutdown(pIOCPContext->clientSocket,SD_BOTH);
-					closesocket(pIOCPContext->clientSocket);
-					delete pIOCPContext;
-					pIOCPContext = NULL;
-					continue;
-				}
-				else
-				{
-					//ok
-				}
-#endif
+				
 
 			}break;
 #if   1
@@ -565,7 +561,7 @@ void CSocketTCP::Close()
 	if (-1 != m_sockfd)
 	{
 		//closesocket(m_sockfd);
-		m_sockfd = -1;
+		m_sockfd = -1;//特别注意关闭后，把socket对象置为INVALID_SOCKET
 	}
 }
 

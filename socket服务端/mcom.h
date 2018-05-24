@@ -102,6 +102,7 @@ typedef struct _HASH_TABLE
 }HASH_TABLE; 
 
 ///////////////////////////////////////////////////////////////////////////
+//extern  CSocketTCP   IOCPsocket;
 extern  HANDLE  RecEvent[2];  //两事件
 extern  HANDLE  CheckHardConfigEvent[2];
 extern  char m_uuid[GUID_LEN];
@@ -118,6 +119,9 @@ extern  CRITICAL_SECTION  mAPP_RECLock;
 extern  CRITICAL_SECTION  mSaveDataLock;//硬件上传的数据存储线程互斥锁
 extern  CRITICAL_SECTION  card_list_Lock;
 ///////////////////////////////////////////////////////////////////////////
+SOCKET  CheckSocketCardList(string  card);//查詢卡號和socket的關係表.獲取socket
+int  bindSocketCard(SOCKET Sclient, string  card);//绑定卡号和socket对应关系
+int  UnbindSocketCard(SOCKET Sclient );//刪除卡號和socket紀録
 DWORD  WINAPI  CheckHardConfigThread(LPVOID lpParameter);//线程调用的指针函数
 char*  MakeUUID();
 int  ParseJsonFromString(char *mstr , Json::Value  *mJson); 

@@ -3,6 +3,7 @@
 #include "TestTask.h"
 #include "mcom.h"
 #include "stdio.h"
+#include "SocketTCP.h"
 #include "SaveQueue.h"
 #include<ctime> 
 
@@ -13,8 +14,20 @@
 #ifdef  WIN_64_DEF
 #pragma comment(lib,"libmysql.lib") 
 #endif
+
 //////////////////////////////////////////////////////////////////////
 CMySaveQueue   m_SaveQueueSQL;//创建对象，实例化一个结构体队列
+struct HardSocketList //全局结构体
+{
+	HardSocketList()
+	{		
+		card_id.clear();
+		clientSocket = -1;
+	}	
+	SOCKET   clientSocket;
+	string  card_id;
+};
+set<HardSocketList*> m_HardSocketList;//创建集合,用于存储socket和card的关系表。转发数据用
 
 CTestTask *pTask =new CTestTask(10);//创建任务
 int  saveCNT=0;
@@ -26,6 +39,73 @@ CTestTask::CTestTask(int id)
 }
 CTestTask::~CTestTask(void)
 {
+}
+
+//////////////////查詢socket和卡号card的绑定表////////////////////////////////////
+SOCKET  CheckSocketCardList( string  card)
+{
+
+	for (set<HardSocketList*>::iterator itor = m_HardSocketList.begin(); itor != m_HardSocketList.end(); ++itor)
+	{
+		HardSocketList* pHardSocket = (*itor);
+		if (NULL == pHardSocket)
+		{
+			continue;
+		}
+		if (pHardSocket->card_id == card)//查找到该socket已经存在，直接修改
+		{
+			return  pHardSocket->clientSocket ;//保存卡号，这样卡号和socket就对应起来了
+		}
+	}
+	
+	return -1;
+}
+
+//////////////////添加socket和卡号card的绑定表////////////////////////////////////
+int  bindSocketCard(SOCKET Sclient , string  card )
+{
+
+	for (set<HardSocketList*>::iterator itor = m_HardSocketList.begin(); itor != m_HardSocketList.end(); ++itor)
+	{
+		HardSocketList* pHardSocket = (*itor);
+		if (NULL == pHardSocket)
+		{			
+			continue;
+		}
+		if (pHardSocket->clientSocket == Sclient)//查找到该socket已经存在，直接修改
+		{
+			pHardSocket->card_id = card;//保存卡号，这样卡号和socket就对应起来了
+			return 0;
+		}
+	}
+	HardSocketList  *pHard = new HardSocketList;
+	pHard->clientSocket = Sclient;
+	pHard->card_id = card;
+	m_HardSocketList.insert(pHard);//不存在该socket，直接添加新的纪录
+	return -1;
+}
+
+//////////////////解除socket和卡号card的绑定表////////////////////////////////////
+int  UnbindSocketCard(SOCKET Sclient )
+{
+	for (set<HardSocketList*>::iterator itor = m_HardSocketList.begin(); itor != m_HardSocketList.end(); ++itor)
+	{
+		HardSocketList* pHardSocket = (*itor);
+		if (NULL == pHardSocket)
+		{
+			continue;
+		}
+		if (pHardSocket->clientSocket == Sclient)//查找到该socket已经存在，直接修改
+		{
+			pHardSocket->clientSocket = -1;
+			pHardSocket->card_id.clear();//保存卡号，这样卡号和socket就对应起来了
+			delete pHardSocket;//直接刪除
+			pHardSocket = NULL;
+			return 0;
+		}
+	}
+	
+	return -1;
 }
 ////////////////////////定时查询报警表数据线程////////////////////////////////////
 DWORD  WINAPI  CheckHardConfigThread(LPVOID lpParameter)
@@ -66,6 +146,7 @@ DWORD  WINAPI  CheckHardConfigThread(LPVOID lpParameter)
 	return 0;
 
 }
+
 ////////////////////硬件接收数据解包///////////////////////////////
 void CTestTask::taskRecClientProc()
 {
@@ -691,13 +772,14 @@ int   SaveGPSData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  int  len)
 	mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存
 	if(!res  )
 	{		
-
 		Json::Value root;             // 表示整个 json 对象
 		root["errno"] = Json::Value(0);     // 新建一个 Key（名为：key_string），赋予字符串值："value_string"。
 		root["error"] = Json::Value("sucess"); // 新建一个 Key（名为：key_number），赋予数值：12345。	
 		Json::FastWriter  fast_writer;//查看json内容对象
 		string str = fast_writer.write(root); //json转string			
 		send(ClientS , (char *)str.data(), (int)str.length(), 0);  // 发送信息 	
+		bindSocketCard(ClientS , str_card);//添加卡号card和socket的对应表
+		
 		//GetLocalTime( &sys ); 
 		//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 		
 		return 0;  		
@@ -861,7 +943,7 @@ int   SaveBaseStationData(SOCKET   ClientS ,  unsigned  char * src ,unsigned  in
 		Json::FastWriter  fast_writer;//查看json内容对象
 		string str = fast_writer.write(root); //json转string			
 		send(ClientS , (char *)str.data(), (int)str.length(), 0);  // 发送信息 	
-
+		bindSocketCard(ClientS, str_card);//添加卡号card和socket的对应表
 		//GetLocalTime( &sys ); 
 		//printf( "%4d/%02d/%02d %02d:%02d:%02d.%03d 星期%1d\n",sys.wYear,sys.wMonth,sys.wDay,sys.wHour,sys.wMinute, sys.wSecond,sys.wMilliseconds,sys.wDayOfWeek); 
 		//cout << "SaveBaseStation-----sucess!\n" << endl;
@@ -1167,6 +1249,12 @@ int   WX_SendBufang_ToHard( )
 						mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存										//cout << "no alarm_set list !\n" << endl;
 						return -1;//布防指令表没有待发送的指令，返回-1
 					}
+
+					ClientS = CheckSocketCardList(str_card);//從綁定表中根據卡號取出socket
+					if (ClientS == -1)
+					{
+						continue;//綁定表沒有查詢到卡號，直接返回,暫不下發該報警
+					}
 					
 					gps_data_success = false;
 					m_strToken = "SELECT  *  FROM  card_data  WHERE card = '" + str_card + "'ORDER BY card_id DESC LIMIT 0,1 ";
@@ -1294,29 +1382,12 @@ int   WX_SendBufang_ToHard( )
 						//printf("gps和基站最新数据时间差:  %f秒\n", dec_value);//
 						if (dec_value > 0)
 						{
-							if (difftime(tm_gps_time, tm_setalarm_time) > 0)//数据比布防指令创建的晚
-							{
-								ClientS = gps_client;
-								card_lock = gps_lock;
-								//printf("采用gps数据记录的端口号作为硬件新socket端口号%d\r\n", ClientS);
-							}
-							else
-							{
-								continue;
-							}
+							card_lock = gps_lock;
+							//printf("采用gps数据记录的端口号作为硬件新socket端口号%d\r\n", ClientS);
 						}
 						else
 						{
-							if (difftime(tm_station_time, tm_setalarm_time) > 0)
-							{
-								ClientS = station_client;
-								card_lock = station_lock;
-								//printf("采用基站数据记录的端口号作为硬件新socket端口号%d\r\n", ClientS);
-							}
-							else //数据比布防指令创建的早，不一定是真实的连接。暂放弃发送
-							{
-								continue;
-							}
+							card_lock = station_lock;
 						}
 					}
 					if (0 == card_lock.compare(allow_alarm))//要布防的操作和硬件实际状态一致，就删除布防命令
@@ -1332,7 +1403,7 @@ int   WX_SendBufang_ToHard( )
 						else
 							continue;
 					}
-					else
+					else //狀態不一致
 					{
 						if (0 == allow_alarm.compare("1"))
 						{
@@ -1343,8 +1414,9 @@ int   WX_SendBufang_ToHard( )
 							root["card"] = Json::Value(str_card);
 							Json::FastWriter  fast_writer;//查看json内容对象
 							string str = fast_writer.write(root); //json转string	
-							send(ClientS, str.c_str(), str.length(), 0);  // 发送信息
-							cout << "发送设防指令！" << endl;
+							//如果设置了调用closesocket()时还有数据未发送完，允许等待。那就不会关闭成功。下次send不会返回-1
+							int re_value = send(ClientS, str.c_str(), str.length(), 0);  // 发送信息
+							cout << "发送设防指令！"<<re_value << endl;
 						}
 						else
 						{
@@ -1355,8 +1427,9 @@ int   WX_SendBufang_ToHard( )
 							root["card"] = Json::Value(str_card);
 							Json::FastWriter  fast_writer;//查看json内容对象
 							string str = fast_writer.write(root); //json转string	
-							send(ClientS, str.c_str(), str.length(), 0);  // 发送信息
-							cout << "发送撤防指令！" << endl;
+							//如果设置了调用closesocket()时还有数据未发送完，允许等待。那就不会关闭成功。下次send不会返回-1
+							int re_value =  send(ClientS, str.c_str(), str.length(), 0);  // 发送信息
+							cout << "发送撤防指令！" << re_value << endl;
 						}
 					}
 				}//for报警设置行数据
@@ -1505,7 +1578,13 @@ int   WX_Send_MotorLock( )
 						mysql_library_end();//，记得在 mysql_close 之后调用 mysql_library_end() 来释放未被释放的内存										//cout << "no alarm_set list !\n" << endl;
 						return -1;//布防指令表没有待发送的指令，返回-1
 					}
-			
+					
+					ClientS = CheckSocketCardList(str_card);//從綁定表中根據卡號取出socket
+					if (ClientS == -1)
+					{
+						continue;//綁定表沒有查詢到卡號，直接返回,暫不下發該報警
+					}
+
 					gps_data_success = false;
 					m_strToken = "SELECT  *  FROM  card_data  WHERE card = '" + str_card + "'ORDER BY card_id DESC LIMIT 0,1 ";
 					getsucess = false;
@@ -1630,29 +1709,12 @@ int   WX_Send_MotorLock( )
 						//printf("gps和基站最新数据时间差:  %f秒\n", dec_value);//
 						if (dec_value > 0)
 						{
-							if (difftime(tm_gps_time, tm_setalarm_time) > 0)//数据比布防指令创建的晚
-							{
-								ClientS = gps_client;
-								card_lock = gps_lock;
-								//printf("采用gps数据记录的端口号作为硬件新socket端口号%d\r\n", ClientS);
-							}
-							else
-							{
-								continue;
-							}
+							card_lock = gps_lock;
+							//printf("采用gps数据记录的端口号作为硬件新socket端口号%d\r\n", ClientS);
 						}
 						else
 						{
-							if (difftime(tm_station_time, tm_setalarm_time) > 0)
-							{
-								ClientS = station_client;
-								card_lock = station_lock;
-								printf("采用基站数据记录的端口号作为硬件新socket端口号%d\r\n", ClientS);
-							}
-							else //数据比布防指令创建的早，不一定是真实的连接。暂放弃发送
-							{
-								continue;
-							}
+							card_lock = station_lock;
 						}
 					}
 					if ( ((card_lock.find("ACLOSE") != string::npos) && (0 == allow_alarm.compare("0"))) ||
@@ -1843,6 +1905,12 @@ int   WX_Send_DeviceOpenToHard()
 						return -1;//布防指令表没有待发送的指令，返回-1
 					}
 
+					ClientS = CheckSocketCardList(str_card);//從綁定表中根據卡號取出socket
+					if (ClientS == -1)
+					{
+						continue;//綁定表沒有查詢到卡號，直接返回,暫不下發該報警
+					}
+
 					gps_data_success = false;
 					m_strToken = "SELECT  *  FROM  card_data  WHERE card = '" + str_card + "'ORDER BY card_id DESC LIMIT 0,1 ";
 					getsucess = false;
@@ -1962,30 +2030,14 @@ int   WX_Send_DeviceOpenToHard()
 						//printf("gps和基站最新数据时间差:  %f秒\n", dec_value);//
 						if (dec_value > 0)
 						{
-							if (difftime(tm_gps_time, tm_setalarm_time) > 0)//数据比布防指令创建的晚
-							{
-								ClientS = gps_client;
-								card_lock = gps_lock;
-								//printf("采用gps数据记录的端口号作为硬件新socket端口号%d\r\n", ClientS);
-							}
-							else
-							{
-								continue;
-							}
+							card_lock = gps_lock;
+							//printf("采用gps数据记录的端口号作为硬件新socket端口号%d\r\n", ClientS);
 						}
 						else
-						{
-							if (difftime(tm_station_time, tm_setalarm_time) > 0)
-							{
-								ClientS = station_client;
-								card_lock = station_lock;
-								//printf("采用基站数据记录的端口号作为硬件新socket端口号%d\r\n", ClientS);
-							}
-							else //数据比布防指令创建的早，不一定是真实的连接。暂放弃发送
-							{
-								continue;
-							}
-						}
+						{								
+							card_lock = station_lock;
+						}					
+						
 					}
 					//要布防的操作和硬件实际状态一致，就删除布防命令
 					if ( ((card_lock.find("BCLOSE") != string::npos) && (0 == allow_alarm.compare("0"))) ||

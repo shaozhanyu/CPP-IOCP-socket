@@ -38,6 +38,7 @@ struct IOCPContextKey //全局结构体
 		NumberOfBytesSend = 0;
 		Buffer.len = DATA_LEN;
 		Buffer.buf = szMessage;
+
 	}
 	OPERATION_TYPE opType;
 	SOCKET   clientSocket;
