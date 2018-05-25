@@ -140,6 +140,7 @@ int   socket_accept_thread(void *ptr)
 	while(true){ //死循环等待连接accept
 
 		printf("服务器监听新的硬件连接\n" );
+#if  0
 		if (IOCPsocket.m_sockfd == INVALID_SOCKET)
 		{
 			printf("服务器监听的硬件socket套接字已经无效!!!\r\n");
@@ -152,6 +153,7 @@ int   socket_accept_thread(void *ptr)
 			IOCPsocket.Listen(10);
 			continue;
 		}
+#endif
 		IOCPsocket.m_newClinetSockfd = accept(IOCPsocket.m_sockfd , (struct sockaddr*)&connetAdrr, &len);//等待socket客户端连接
 		
 		if (IOCPsocket.m_newClinetSockfd == INVALID_SOCKET)
@@ -159,10 +161,11 @@ int   socket_accept_thread(void *ptr)
 			Sleep(500);
 			//printf("硬件客户端连接无效accept返回值%d\r\n" , IOCPsocket.m_newClinetSockfd);
 			cout << "硬件accept error,error code： " << IOCPsocket.GetLastError() << endl;			
-			IOCPsocket.Close(); //关闭完成端口，释放相关资源，清除连接
-			
+#if  0
+			IOCPsocket.Close(); //关闭完成端口，释放相关资源，清除连接			
 			IOCPsocket.Create("", MYPORT, true);//创建SOCKET服务端，针对硬件连接
 			IOCPsocket.Listen(10);
+#endif
 			continue;
 		}
 		else  if (IOCPsocket.m_newClinetSockfd < max_value)
@@ -212,6 +215,7 @@ int   APP_accept_thread(void *ptr)
 	while(true){ //等待连接accept
 		
 		printf("服务器监听新的APP连接\n");
+#if  0
 		if (APPsocket.m_sockfd == INVALID_SOCKET)
 		{
 			printf("服务器监听的APP-socket套接字已经无效!!!\r\n");
@@ -224,16 +228,19 @@ int   APP_accept_thread(void *ptr)
 			APPsocket.Listen(10);
 			continue;
 		}
+#endif
 		APPsocket.m_newClinetSockfd = accept(APPsocket.m_sockfd, (struct sockaddr*)&connetAdrr, &len); //等待socket客户端连接
 		if (APPsocket.m_newClinetSockfd == INVALID_SOCKET)
 		{
 			Sleep(500);
+#if  0
 			cout << "APP-accept error,error code " << APPsocket.GetLastError() << endl;
 			//printf("APP客户端连接无效accept返回值%d\n" , APPsocket.m_newClinetSockfd);
 			APPsocket.Close(); //关闭完成端口，释放相关资源
 			//closesocket(APPsocket.m_sockfd);
 			APPsocket.Create("", APP_PORT, true); //创建socket服务，针对APP连接
 			APPsocket.Listen(10);
+#endif
 			continue;
 		}		
 		else  if (APPsocket.m_newClinetSockfd < max_value )
